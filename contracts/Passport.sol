@@ -35,24 +35,35 @@ contract Passport is Ownable, AccessControl {
         int valid_ttp_count;
         address[] ttp_proofs;
         int peer_proof_count;
-        mapping (address => bool) peer_trust;
+        //mapping (address => bool) peer_trust;
+        UserPeerTrust peer_trust_data;
     }
+
+
 
     struct TTP {
         address service;
         address ENS_address;    // we can get domain or other info about TTP from there along with description
-        mapping (string => bool) proofs;
+        //mapping (string => bool) proofs;
+        TTP_Proofs proofs_data;
         Phase TTP_status;
 
     }
 
+    // mapping utility structs
+    struct UserPeerTrust {
+        mapping (address => bool) peer_trust;
+    }
+    struct TTP_Proofs {
+        mapping (string => bool) proofs;
+    }
 
     
     mapping (address => mapping (PassportType => User)) private Users ;  // from address wallet to PassportType (Internal or International) to a UserCard. Remember that users can and most likely have at least two passports.
 
     mapping (string hash_mrz_id => User) private PassportBook;
 
-    mapping (address => TTP) public TTPS; // mapping of Trusted 3rd parties allowed to proof id. 
+    mapping (address => TTP) TTPS; // mapping of Trusted 3rd parties allowed to proof id. 
 
     constructor(
 
@@ -70,8 +81,21 @@ contract Passport is Ownable, AccessControl {
 
 
     // create user
-    function _createUser(address user, PassportType id_type, string memory mrz_uid_hash)  internal{
+    function _createUser(address user_address, PassportType id_type, string memory mrz_uid_hash)  internal{
+        User storage newUser = Users[user_address][id_type];
+        newUser.wallet = user_address;
+        newUser._passportType = id_type;
+        newUser.mrz_hash = mrz_uid_hash;
+        newUser.valid_ttp_count = 0; // change it here?
+        newUser.peer_proof_count = 0;
+        newUser.ttp_proofs = new address[](0);
         
+        UserPeerTrust storage upt;
+        upt.peer_trust[address(0)] = false;
+        newUser.peer_trust_data = upt;
+
+        Users[user_address][id_type] = newUser;
+
     }
 
     // proove user submit valid creds
