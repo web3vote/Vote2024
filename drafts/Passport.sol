@@ -72,7 +72,7 @@ contract Leg10n is Ownable, AccessControl {
         string memory tgid_,
         string memory public_key_,
         string memory plain_id
-    ) Ownable() {
+    ) Ownable(msg.sender) {
         _passportFee = 2000000000000000 wei;
         _owner = owner();
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);

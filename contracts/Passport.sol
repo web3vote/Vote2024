@@ -20,8 +20,41 @@ contract Passport is Ownable, AccessControl {
     address private _owner;
     bytes32 public constant moderator = keccak256("moderator");
 
+    enum PassportType {
+        Internal, International
+    }
 
-       constructor(
+    enum Phase {
+        Paused, Active
+    }
+
+    struct User {
+        address wallet;
+        string mrz_hash; //TODO: check if possible to convert to bytes32. do not forget about salt
+        PassportType _passportType;
+        int valid_ttp_count;
+        address[] ttp_proofs;
+        int peer_proof_count;
+        mapping (address => bool) peer_trust;
+    }
+
+    struct TTP {
+        address service;
+        address ENS_address;    // we can get domain or other info about TTP from there along with description
+        mapping (string => bool) proofs;
+        Phase TTP_status;
+
+    }
+
+
+    
+    mapping (address => mapping (PassportType => User)) private Users ;  // from address wallet to PassportType (Internal or International) to a UserCard. Remember that users can and most likely have at least two passports.
+
+    mapping (string hash_mrz_id => User) private PassportBook;
+
+    mapping (address => TTP) public TTPS; // mapping of Trusted 3rd parties allowed to proof id. 
+
+    constructor(
 
         string memory plain_id
     ) Ownable(msg.sender) {
@@ -36,6 +69,41 @@ contract Passport is Ownable, AccessControl {
     }
 
 
+    // create user
+    function _createUser(address user, PassportType id_type, string memory mrz_uid_hash)  internal{
+        
+    }
+
+    // proove user submit valid creds
+    function ProoveUserByTTP(address user, PassportType id_type, string memory mrz_uid_hash)  onlyRole(moderator) public {
+        require(TTPS[msg.sender].service == msg.sender, "TTP service is not registred");
+    }
+
+
+    function addNewTTP(address service_address, address ENS_address) onlyOwner public  {
+        
+    }
+
+
+    function switchTTP(address service_address, Phase phase_) onlyOwner public {
+        TTPS[service_address].TTP_status == phase_;
+    }
+
+
+    // really public?
+    function checkUserExist(string memory mrz_uid_hash) public returns(bool) {
+
+    }
+
+    function checkUserHaveTypeID(string memory mrz_uid_hash, PassportType id_type) public returns(bool) {
+
+    }
+
+
+    // really necessary?
+    function checkUserHavePassedTTP(string memory mrz_uid_hash, PassportType id_type) public {
+
+    }
 
    /**
     * 
