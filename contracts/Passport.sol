@@ -97,7 +97,7 @@ contract Passport is Ownable, AccessControl {
 
     // create and proove new User with TTP
     function _create_and_proove_ttp(address user_address, PassportType id_type, string memory mrz_uid_hash) internal {
-        require (checkUserExist(mrz_uid_hash) == false, "user already exist");
+        require (checkUserExistByHash(mrz_uid_hash) == false, "user already exist");
         User storage _u = Users[user_address][id_type];
         _u.wallet = user_address;
         _u._passportType = id_type;
@@ -110,7 +110,7 @@ contract Passport is Ownable, AccessControl {
 
     // increase ttp check   TODO: consider making public + check for TTPS auth..?
     function _proove_ttp(string memory mrz_uid_hash) internal {
-        require(checkUserExist(mrz_uid_hash) == true, "user is not exist");
+        require(checkUserExistByHash(mrz_uid_hash) == true, "user is not exist");
        // User storage _u = Users[user_address][id_type];
         User storage _u = PassportBook[mrz_uid_hash];
         address user_address = _u.wallet;
@@ -129,7 +129,7 @@ contract Passport is Ownable, AccessControl {
         require(TTPS[msg.sender].service == msg.sender, "TTP service is not registred");
 
         // check if user exist and if not create new
-        bool u_exist = checkUserExist(mrz_uid_hash);
+        bool u_exist = checkUserExistByHash(mrz_uid_hash);
         if (u_exist == false) {
             _create_and_proove_ttp(user, id_type, mrz_uid_hash);
         } else {
@@ -170,7 +170,7 @@ contract Passport is Ownable, AccessControl {
 
 
     // really public?
-    function checkUserExist(string memory mrz_uid_hash) public view returns(bool) {
+    function checkUserExistByHash(string memory mrz_uid_hash) internal view returns(bool) {
         User memory u = PassportBook[mrz_uid_hash];
         if (u.wallet != address(0)) {   //TODO: test it!
             return true;
@@ -180,22 +180,42 @@ contract Passport is Ownable, AccessControl {
        
     }
 
-    function checkUserHaveTypeID(string memory mrz_uid_hash, PassportType id_type) public view returns(bool) {
-        require (checkUserExist(mrz_uid_hash), "user does not exist");
+    /*
+    function checkUserExistByAddress(address user) public view returns (bool) {
+        User memory u = Users[]
+    }
+    */
+
+    function CheckUserHaveTypeIDByAddr(address user_address, PassportType id_type) public view returns(bool) {
+       // require (checkUserExist(mrz_uid_hash), "user does not exist");
+        User memory u = Users[user_address][id_type];
+        address ua = u.wallet;
+        if (ua != address(0)) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    // really necessary?
+    function checkUserHavePassedTTP_ByHash(string memory mrz_uid_hash, PassportType id_type) public view returns(bool){
+        require (checkUserExistByHash(mrz_uid_hash), "user does not exist");
         User memory u = PassportBook[mrz_uid_hash];
-        //require (u._passportType == id_type, "wrong passport type");
-        if (u._passportType == id_type) {
+        require (u._passportType == id_type, "wrong passport type");
+        address[] memory proofs = u.ttp_proofs;
+        if (proofs.length > 0) {
             return true;
         } else {
             return false;
         }
     }
 
-
-    // really necessary?
-    function checkUserHavePassedTTP(string memory mrz_uid_hash, PassportType id_type) public view returns(bool){
-        require (checkUserExist(mrz_uid_hash), "user does not exist");
-        User memory u = PassportBook[mrz_uid_hash];
+    function CheckUserHavePassedTTP_ByAddr(address user_address, PassportType id_type) public view returns(bool) {
+        User memory u = Users[user_address][id_type];
+        address ua = u.wallet;
+        require(ua != address(0), "user does not exist for this address and id_type");
         require (u._passportType == id_type, "wrong passport type");
         address[] memory proofs = u.ttp_proofs;
         if (proofs.length > 0) {
