@@ -42,6 +42,10 @@ contract Vote is Ownable, AccessControl {
         IsNotStarted,Started,Finished, Finalized
     }
 
+    enum VoteType {
+        FreePromt, ENS_Valid, T3P_and_ENS
+    }
+
     struct Voting {
         uint uid;
         address ens_domain; // or orginiser
@@ -53,6 +57,7 @@ contract Vote is Ownable, AccessControl {
         Passport.PassportType id_type_required; // can vote only internal or only external. by default if all citizens have internal passport, everyone is allowed. opposition in exile can be elected only by exiled russians if seted.
        // mapping(string option => uint count) free_results;  // if it's "open promt vote" than we just count how much for each option
         uint votes_total;
+        VoteType vote_type;
       //  mapping(address => bool) users_voted;
     }
 
@@ -68,7 +73,7 @@ contract Vote is Ownable, AccessControl {
 
     event FreeVoteCommited (uint indexed uid_event,string promt, uint candidate_total_votes);
 
-    function createNewVote(address orginiser_or_ens, address operator, uint start_date_timestamp, uint vote_hours, Passport.PassportType id_type_required) onlyOwner() public returns(uint){
+    function createNewVote(address orginiser_or_ens, address operator, uint start_date_timestamp, uint vote_hours, Passport.PassportType id_type_required, VoteType vote_type) onlyOwner() public returns(uint){
         Voting storage v = Votings[uid_vote_global_counter];
        // Org memory o = Org(orginiser_or_ens, operator);
        // v._org = o;
@@ -78,6 +83,7 @@ contract Vote is Ownable, AccessControl {
         v.time_to_vote_hours = vote_hours;
         v.id_type_required = id_type_required;
         v.uid = uid_vote_global_counter;
+        v.vote_type = vote_type;
         //Votings[uid_vote_global_counter] = v;
         Votings.push(v);
        // Voting[] storage vbo = VotingsByOrg[orginiser_or_ens];
@@ -161,6 +167,22 @@ contract Vote is Ownable, AccessControl {
 
        Votings[uid_event] = v;
        emit FreeVoteCommited(uid_event,promt_choice,option_counter_results);
+
+
+    }
+
+    // additional check that promt_choice is registred in ENS and address
+    function CommitChoiceENSValid(uint uid_event, string memory promt_choice) public {
+        require(checkVoteExist(uid_event), "vote does not exits");
+        Phase ph = getVoteStatus(uid_event);
+        require (ph == Phase.Started, "vote is not in active phase");
+        Voting storage v = Votings[uid_event];
+        Passport.PassportType id_type_req = v.id_type_required;
+
+       bool id_type_met =PC.CheckUserHaveTypeIDByAddr(msg.sender, id_type_req);
+       require(id_type_met == true, "user does not registred requirement id type");
+       bool user_voted = UsersVoted[uid_event][msg.sender];
+       require(user_voted == false, "user already voted");
 
 
     }
