@@ -90,9 +90,6 @@ contract Passport is Ownable, AccessControl {
         newUser.wallet = user_address;
         newUser._passportType = id_type;
         newUser.mrz_hash = mrz_uid_hash;
-     //   newUser.valid_ttp_count = 0; // change it here?
-     //   newUser.peer_proof_count = 0;
-     // newUser.ttp_proofs = new address[](0);
 
         Users[user_address][id_type] = newUser;
         PassportBook[mrz_uid_hash] = newUser;
