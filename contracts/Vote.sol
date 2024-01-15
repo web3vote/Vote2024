@@ -66,6 +66,8 @@ contract Vote is Ownable, AccessControl {
     mapping (uint uid_vote => mapping(string option => uint count)) public VoteResultsFreePromt;
     mapping (uint uid_vote => mapping(address user => bool voted)) private UsersVoted;
 
+    event FreeVoteCommited (uint indexed uid_event,string promt, uint candidate_total_votes);
+
     function createNewVote(address orginiser_or_ens, address operator, uint start_date_timestamp, uint vote_hours, Passport.PassportType id_type_required) onlyOwner() public returns(uint){
         Voting storage v = Votings[uid_vote_global_counter];
        // Org memory o = Org(orginiser_or_ens, operator);
@@ -158,6 +160,7 @@ contract Vote is Ownable, AccessControl {
        v.votes_total +=1;
 
        Votings[uid_event] = v;
+       emit FreeVoteCommited(uid_event,promt_choice,option_counter_results);
 
 
     }
