@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";  
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import '@ensdomains/ens-contracts/contracts/registry/ENS.sol';
 
 import "./Passport.sol";
 
@@ -21,6 +22,9 @@ import "./Passport.sol";
 
 contract Vote is Ownable, AccessControl {
 
+    ENS public ens;
+    
+
 
     address private _owner;
     bytes32 public constant moderator = keccak256("moderator");
@@ -29,11 +33,12 @@ contract Vote is Ownable, AccessControl {
     uint uid_vote_global_counter = 0; // how much in total. 
 
 
-        constructor(address passport_contract) Ownable(msg.sender) {
+        constructor(address passport_contract, address ens_api) Ownable(msg.sender) {
         _owner = owner();
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(moderator, msg.sender);
         PC = Passport(passport_contract);
+        ens = ENS(ens_api);
       //  addNewTTP(msg.sender,msg.sender);
         }
 
