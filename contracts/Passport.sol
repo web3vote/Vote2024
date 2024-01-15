@@ -2,10 +2,6 @@
 pragma solidity ^0.8.20;
 
 
-
-
-
-
 import "@openzeppelin/contracts/access/Ownable.sol";  
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
@@ -15,10 +11,21 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 //import "../node_modules/@openzeppelin/contracts/access/AccessControl.sol";
 //import "hardhat/console.sol";
 
+
+/**
+ * @title Passport
+ * @author zer0_ex_Bekket
+ * @notice Passport verification contract for Vote2024
+ */
+
+
+
+
 contract Passport is Ownable, AccessControl {
     uint private _passportFee;
     address private _owner;
     bytes32 public constant moderator = keccak256("moderator");
+    bytes32 public constant T3P = keccak256("T3P");
 
     enum PassportType {
         Internal, International
@@ -66,7 +73,12 @@ contract Passport is Ownable, AccessControl {
         _owner = owner();
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(moderator, msg.sender);
+        GetKeccakHash("T3P");
+        bytes32 random_data_hash = GetKeccakHash("1234567890>>>>>>>>>>>>>>0987654321");
+        string memory random_hash = bytes32ToString(random_data_hash);
         addNewTTP(msg.sender,msg.sender);
+        // test call
+        ProoveUserByTTP(msg.sender,PassportType.International,random_hash);
 
 
     }
@@ -116,7 +128,7 @@ contract Passport is Ownable, AccessControl {
 
 
     // proove user submit valid creds
-    function ProoveUserByTTP(address user, PassportType id_type, string memory mrz_uid_hash)  onlyRole(moderator) public {
+    function ProoveUserByTTP(address user, PassportType id_type, string memory mrz_uid_hash)  onlyRole(T3P) public {
         require(TTPS[msg.sender].service == msg.sender, "TTP service is not registred");
 
         // check if user exist and if not create new
@@ -140,6 +152,7 @@ contract Passport is Ownable, AccessControl {
         _t.ENS_address = ENS_address;
         _t.TTP_status = Phase.Active;
         TTPS[service_address] = _t;
+        _grantRole(T3P, service_address);
     }
 
 
@@ -170,15 +183,49 @@ contract Passport is Ownable, AccessControl {
        
     }
 
-    function checkUserHaveTypeID(string memory mrz_uid_hash, PassportType id_type) public returns(bool) {
-
+    function checkUserHaveTypeID(string memory mrz_uid_hash, PassportType id_type) public view returns(bool) {
+        require (checkUserExist(mrz_uid_hash), "user does not exist");
+        User memory u = PassportBook[mrz_uid_hash];
+        //require (u._passportType == id_type, "wrong passport type");
+        if (u._passportType == id_type) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
     // really necessary?
-    function checkUserHavePassedTTP(string memory mrz_uid_hash, PassportType id_type) public {
+    function checkUserHavePassedTTP(string memory mrz_uid_hash, PassportType id_type) public view returns(bool){
+        require (checkUserExist(mrz_uid_hash), "user does not exist");
+        User memory u = PassportBook[mrz_uid_hash];
+        require (u._passportType == id_type, "wrong passport type");
+        address[] memory proofs = u.ttp_proofs;
+        if (proofs.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    // get all MRZ hashes which has been checked by this TTP address
+    function _getTTP_checks_by_service(address service) internal view returns (string[] memory) {
+        string[] memory checks = TTP_proofs[service];
+        return checks;
+    }
+
+
+    // get array of ttp services which has been checked user passport by it's hash. length can be tracted as valid/invalid
+    function _getTTP_proofs_of_user(string memory mrz_uid_hash) internal view returns (address[] memory) {
+        User memory u = PassportBook[mrz_uid_hash];
+        address[] memory user_ttp_proofs = u.ttp_proofs; // array of addresses of ttp services which has been proofed user.
+        return user_ttp_proofs;
 
     }
+
+
+    //function getUserPassedTTPS()
 
    /**
     * 
@@ -186,5 +233,23 @@ contract Passport is Ownable, AccessControl {
     */
    function GetKeccakHash(string memory text) public pure returns (bytes32) {
         return keccak256(abi.encode(text));
+    }
+
+
+
+
+    function bytes32ToString(bytes32 _bytes32) internal pure returns (string memory) {
+        uint8 i = 0;
+        while(i < 32 && _bytes32[i] != 0) {
+            i++;
+        }
+        
+        bytes memory bytesArray = new bytes(i);
+        
+        for (uint8 j = 0; j < i; j++) {
+            bytesArray[j] = _bytes32[j];
+        }
+        
+        return string(bytesArray);
     }
 }
