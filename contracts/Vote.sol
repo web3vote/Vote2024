@@ -89,6 +89,7 @@ contract Vote is Ownable, AccessControl {
 
     event FreeVoteCommited (uint indexed uid_event,string promt,bytes32 promt_hash, uint candidate_total_votes);
     event ENSVoteCommited(uint indexed uit_event, string promt,bytes32 promt_hash, uint candidate_total_votes);
+    event ENS_T3P_VoteCommited(uint indexed uit_event, string promt,bytes32 promt_hash, uint candidate_total_votes);
 
     function createNewVote(address orginiser_or_ens, address operator, uint start_date_timestamp, uint vote_hours, Passport.PassportType id_type_required, VoteType vote_type) onlyOwner() public returns(uint){
         Voting storage v = Votings[uid_vote_global_counter];
@@ -165,6 +166,32 @@ contract Vote is Ownable, AccessControl {
         return user_address;
     }
 
+
+    function _commitVote(uint uid_event, string memory promt_choice, VoteType type_of_vote) internal{
+       Voting storage v = Votings[uid_event];
+
+       require (v.vote_type == type_of_vote, "wrong vote type");
+
+       bytes32 hash = PC.GetKeccakHash(promt_choice); // serialize to hash from string 
+       uint option_counter_results = VoteResultsFreePromt[uid_event][hash];
+       option_counter_results +=1;
+       VoteResultsFreePromt[uid_event][hash] = option_counter_results;
+       UsersVoted[uid_event][msg.sender] = true;
+       v.votes_total +=1;
+
+       Votings[uid_event] = v;
+
+       if (type_of_vote == VoteType.FreePromt) {
+            emit FreeVoteCommited(uid_event,promt_choice,hash,option_counter_results);
+       }
+       if (type_of_vote == VoteType.ENS_Valid) {
+            emit ENSVoteCommited(uid_event,promt_choice,hash,option_counter_results);
+       }
+       if (type_of_vote == VoteType.T3P_and_ENS) {
+            emit ENS_T3P_VoteCommited(uid_event,promt_choice,hash,option_counter_results);
+       }
+    }
+
     // Free promt
     function CommitChoiceFreePromt(uint uid_event,string memory promt_choice) public {
         require(checkVoteExist(uid_event), "vote does not exits");
@@ -175,20 +202,15 @@ contract Vote is Ownable, AccessControl {
 
        bool id_type_met =PC.CheckUserHaveTypeIDByAddr(msg.sender, id_type_req);
        require(id_type_met == true, "user does not registred requirement id type");
+
+       require(v.vote_type == VoteType.FreePromt, "Invalid vote type");
+
+
        bool user_voted = UsersVoted[uid_event][msg.sender];
        require(user_voted == false, "user already voted");
 
-
-       //Voting storage v = Votings[uid];
-       bytes32 hash = PC.GetKeccakHash(promt_choice); // serialize to hash from string 
-       uint option_counter_results = VoteResultsFreePromt[uid_event][hash];
-       option_counter_results +=1;
-       VoteResultsFreePromt[uid_event][hash] = option_counter_results;
-       UsersVoted[uid_event][msg.sender] = true;
-       v.votes_total +=1;
-
-       Votings[uid_event] = v;
-       emit FreeVoteCommited(uid_event,promt_choice,hash,option_counter_results);
+       _commitVote(uid_event,promt_choice, v.vote_type);
+       //emit FreeVoteCommited(uid_event,promt_choice,hash,option_counter_results);
     }
 
 
@@ -211,18 +233,35 @@ contract Vote is Ownable, AccessControl {
        address target_address = checkENS_User_by_string(promt_choice);
        require (target_address != address(0), "promt_choice is not registred in ENS");
 
-       bytes32 hash = PC.GetKeccakHash(promt_choice); // serialize to hash from string 
-       uint option_counter_results = VoteResultsFreePromt[uid_event][hash];
-       option_counter_results +=1;
-       VoteResultsFreePromt[uid_event][hash] = option_counter_results;
-       UsersVoted[uid_event][msg.sender] = true;
-       v.votes_total +=1;
-
-       Votings[uid_event] = v;
-       emit ENSVoteCommited(uid_event,promt_choice,hash,option_counter_results);
+       _commitVote(uid_event,promt_choice, v.vote_type);
     }
 
-    
+
+    function CommitChoice_ENS_and_T3P(uint uid_event,string memory promt_choice)  public {
+        require(checkVoteExist(uid_event), "vote does not exits");
+        Phase ph = getVoteStatus(uid_event);
+        require (ph == Phase.Started, "vote is not in active phase");
+        Voting storage v = Votings[uid_event];
+        Passport.PassportType id_type_req = v.id_type_required;
+
+       bool id_type_met =PC.CheckUserHaveTypeIDByAddr(msg.sender, id_type_req);
+       require(id_type_met == true, "user does not registred requirement id type");
+       bool user_voted = UsersVoted[uid_event][msg.sender];
+       require(user_voted == false, "user already voted");
+
+       require(v.vote_type == VoteType.T3P_and_ENS, "Invalid vote type");
+
+       address target_address = checkENS_User_by_string(promt_choice);
+       require (target_address != address(0), "promt_choice is not registred in ENS");
+
+
+       bool checked_Passport = PC.CheckUserHavePassedTTP_ByAddr(target_address, id_type_req);
+       require(checked_Passport == true, "candidate didn't process T3P check");
+
+       _commitVote(uid_event,promt_choice, v.vote_type);
+    }
+
+
 
     // ENS Resolve
     function resolve(bytes32 node) public view returns(address) {
