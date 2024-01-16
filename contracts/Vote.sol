@@ -4,7 +4,8 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";  
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import '@ensdomains/ens-contracts/contracts/registry/ENS.sol';
+//import '@ensdomains/ens-contracts/contracts/registry/ENS.sol';
+//import "@ensdomains/ens-contracts/contracts/resolvers/PublicResolver.sol";
 
 import "./Passport.sol";
 
@@ -12,6 +13,14 @@ import "./Passport.sol";
 //import "../node_modules/@openzeppelin/contracts/access/AccessControl.sol";
 //import "hardhat/console.sol";
 
+
+abstract contract ENS {
+    function resolver(bytes32 node) public virtual view returns (Resolver);
+}
+
+abstract contract Resolver {
+    function addr(bytes32 node) public virtual view returns (address);
+}
 
 /**
  * @title Vote2024
@@ -22,7 +31,8 @@ import "./Passport.sol";
 
 contract Vote is Ownable, AccessControl {
 
-    ENS public ens;
+    //ENS public ens;
+    ENS ens = ENS(0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e);
     
 
 
@@ -33,12 +43,13 @@ contract Vote is Ownable, AccessControl {
     uint uid_vote_global_counter = 0; // how much in total. 
 
 
-        constructor(address passport_contract, address ens_api) Ownable(msg.sender) {
+        constructor(address passport_contract) Ownable(msg.sender) {
         _owner = owner();
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(moderator, msg.sender);
         PC = Passport(passport_contract);
-        ens = ENS(ens_api);
+       // ens = ENS(ens_api);
+       
       //  addNewTTP(msg.sender,msg.sender);
         }
 
@@ -73,10 +84,11 @@ contract Vote is Ownable, AccessControl {
     //mapping (address orginiser =>Voting[]) public VotingsByOrg;   // can be a few
 
     //mapping (Voting voting => mapping(string option => uint count)) public Results;
-    mapping (uint uid_vote => mapping(string option => uint count)) public VoteResultsFreePromt;
+    mapping (uint uid_vote => mapping(bytes32 option => uint count)) public VoteResultsFreePromt;
     mapping (uint uid_vote => mapping(address user => bool voted)) private UsersVoted;
 
-    event FreeVoteCommited (uint indexed uid_event,string promt, uint candidate_total_votes);
+    event FreeVoteCommited (uint indexed uid_event,string promt,bytes32 promt_hash, uint candidate_total_votes);
+    event ENSVoteCommited(uint indexed uit_event, string promt,bytes32 promt_hash, uint candidate_total_votes);
 
     function createNewVote(address orginiser_or_ens, address operator, uint start_date_timestamp, uint vote_hours, Passport.PassportType id_type_required, VoteType vote_type) onlyOwner() public returns(uint){
         Voting storage v = Votings[uid_vote_global_counter];
@@ -145,8 +157,12 @@ contract Vote is Ownable, AccessControl {
         }
     }
 
-    function checkUserDidntVote() internal returns (bool) {
-        
+
+
+    function checkENS_User_by_string(string memory name) public view returns (address) {
+        bytes32 name_hash = PC.GetKeccakHash(name);
+        address user_address = resolve(name_hash);
+        return user_address;
     }
 
     // Free promt
@@ -164,17 +180,18 @@ contract Vote is Ownable, AccessControl {
 
 
        //Voting storage v = Votings[uid];
-       uint option_counter_results = VoteResultsFreePromt[uid_event][promt_choice];
+       bytes32 hash = PC.GetKeccakHash(promt_choice); // serialize to hash from string 
+       uint option_counter_results = VoteResultsFreePromt[uid_event][hash];
        option_counter_results +=1;
-       VoteResultsFreePromt[uid_event][promt_choice] = option_counter_results;
+       VoteResultsFreePromt[uid_event][hash] = option_counter_results;
        UsersVoted[uid_event][msg.sender] = true;
        v.votes_total +=1;
 
        Votings[uid_event] = v;
-       emit FreeVoteCommited(uid_event,promt_choice,option_counter_results);
-
-
+       emit FreeVoteCommited(uid_event,promt_choice,hash,option_counter_results);
     }
+
+
 
     // additional check that promt_choice is registred in ENS and address
     function CommitChoiceENSValid(uint uid_event, string memory promt_choice) public {
@@ -189,8 +206,28 @@ contract Vote is Ownable, AccessControl {
        bool user_voted = UsersVoted[uid_event][msg.sender];
        require(user_voted == false, "user already voted");
 
+       require(v.vote_type == VoteType.ENS_Valid, "Invalid vote type");
 
+       address target_address = checkENS_User_by_string(promt_choice);
+       require (target_address != address(0), "promt_choice is not registred in ENS");
+
+       bytes32 hash = PC.GetKeccakHash(promt_choice); // serialize to hash from string 
+       uint option_counter_results = VoteResultsFreePromt[uid_event][hash];
+       option_counter_results +=1;
+       VoteResultsFreePromt[uid_event][hash] = option_counter_results;
+       UsersVoted[uid_event][msg.sender] = true;
+       v.votes_total +=1;
+
+       Votings[uid_event] = v;
+       emit ENSVoteCommited(uid_event,promt_choice,hash,option_counter_results);
     }
 
+    
+
+    // ENS Resolve
+    function resolve(bytes32 node) public view returns(address) {
+        Resolver resolver = ens.resolver(node);
+        return resolver.addr(node);
+    }
 
 }
