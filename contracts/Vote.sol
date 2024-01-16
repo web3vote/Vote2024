@@ -11,7 +11,6 @@ import "./Passport.sol";
 
 //import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 //import "../node_modules/@openzeppelin/contracts/access/AccessControl.sol";
-//import "hardhat/console.sol";
 
 
 abstract contract ENS {
@@ -91,6 +90,17 @@ contract Vote is Ownable, AccessControl {
     event ENSVoteCommited(uint indexed uit_event, string promt,bytes32 promt_hash, uint candidate_total_votes);
     event ENS_T3P_VoteCommited(uint indexed uit_event, string promt,bytes32 promt_hash, uint candidate_total_votes);
 
+
+
+    // Modifiers
+    modifier voteExist(uint uid_event) {
+       require(checkVoteExist(uid_event), "vote does not exits");
+       _; 
+    }
+
+
+
+
     function createNewVote(address orginiser_or_ens, address operator, uint start_date_timestamp, uint vote_hours, Passport.PassportType id_type_required, VoteType vote_type) onlyOwner() public returns(uint){
         Voting storage v = Votings[uid_vote_global_counter];
        // Org memory o = Org(orginiser_or_ens, operator);
@@ -111,8 +121,8 @@ contract Vote is Ownable, AccessControl {
     }
 
 
-    function checkVotePhase(uint uid_event) public view returns (bool) {
-        require(checkVoteExist(uid_event), "vote does not exits");
+    function checkVotePhase(uint uid_event) public voteExist(uid_event) view returns (bool) {
+       // require(checkVoteExist(uid_event), "vote does not exits");
         Voting memory v = Votings[uid_event];
         uint start_date = v.start_date;
         uint ttv = v.time_to_vote_hours;
@@ -129,8 +139,8 @@ contract Vote is Ownable, AccessControl {
 
 
 
-    function getVoteStatus(uint uid_event) public view returns(Phase) {
-        require(checkVoteExist(uid_event), "vote does not exits");
+    function getVoteStatus(uint uid_event) public voteExist(uid_event) view returns(Phase) {
+       // require(checkVoteExist(uid_event), "vote does not exits");
         Voting memory v = Votings[uid_event];
         uint start_date = v.start_date;
         uint ttv = v.time_to_vote_hours;
@@ -193,8 +203,8 @@ contract Vote is Ownable, AccessControl {
     }
 
     // Free promt
-    function CommitChoiceFreePromt(uint uid_event,string memory promt_choice) public {
-        require(checkVoteExist(uid_event), "vote does not exits");
+    function CommitChoiceFreePromt(uint uid_event,string memory promt_choice) voteExist(uid_event) public {
+      //  require(checkVoteExist(uid_event), "vote does not exits");
         Phase ph = getVoteStatus(uid_event);
         require (ph == Phase.Started, "vote is not in active phase");
         Voting storage v = Votings[uid_event];
@@ -216,8 +226,8 @@ contract Vote is Ownable, AccessControl {
 
 
     // additional check that promt_choice is registred in ENS and address
-    function CommitChoiceENSValid(uint uid_event, string memory promt_choice) public {
-        require(checkVoteExist(uid_event), "vote does not exits");
+    function CommitChoiceENSValid(uint uid_event, string memory promt_choice) voteExist(uid_event) public {
+      //  require(checkVoteExist(uid_event), "vote does not exits");
         Phase ph = getVoteStatus(uid_event);
         require (ph == Phase.Started, "vote is not in active phase");
         Voting storage v = Votings[uid_event];
@@ -237,8 +247,8 @@ contract Vote is Ownable, AccessControl {
     }
 
 
-    function CommitChoice_ENS_and_T3P(uint uid_event,string memory promt_choice)  public {
-        require(checkVoteExist(uid_event), "vote does not exits");
+    function CommitChoice_ENS_and_T3P(uint uid_event,string memory promt_choice) voteExist(uid_event) public {
+       // require(checkVoteExist(uid_event), "vote does not exits");
         Phase ph = getVoteStatus(uid_event);
         require (ph == Phase.Started, "vote is not in active phase");
         Voting storage v = Votings[uid_event];
