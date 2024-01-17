@@ -110,6 +110,12 @@ contract Vote is Ownable, AccessControl {
         _;
     }
 
+    modifier canidateMustRegisterENS(string memory promt_choice) {
+        address target_address = checkENS_User_by_string(promt_choice);
+        require (target_address != address(0), "promt_choice is not registred in ENS");
+        _;
+    }
+
 
 
 
@@ -201,6 +207,18 @@ contract Vote is Ownable, AccessControl {
 
        require (v.vote_type == type_of_vote, "wrong vote type");
 
+        if (type_of_vote == VoteType.FreePromt) {
+            // check free
+             }
+        if (type_of_vote == VoteType.ENS_Valid) {
+            // check that delegate (promt_choice) is registred in ENS by it's hash
+            // already checked by modifiers
+            }
+        if (type_of_vote == VoteType.T3P_and_ENS) {
+            // check that promt_choice is registred in ENS and have passed our T3P check.
+            // already check in main func
+       }
+
        bytes32 hash = PC.GetKeccakHash(promt_choice); // serialize to hash from string 
        uint option_counter_results = VoteResultsFreePromt[uid_event][hash];
        option_counter_results +=1;
@@ -210,6 +228,7 @@ contract Vote is Ownable, AccessControl {
 
        Votings[uid_event] = v;
 
+       // Emit Events
        if (type_of_vote == VoteType.FreePromt) {
             emit FreeVoteCommited(uid_event,promt_choice,hash,option_counter_results);
        }
@@ -230,16 +249,12 @@ contract Vote is Ownable, AccessControl {
     }
 
 
-
+ 
     // additional check that promt_choice is registred in ENS and address
-    function CommitChoiceENSValid(uint uid_event, string memory promt_choice) voteExist(uid_event) voteActive(uid_event) YOVO(uid_event) public {
+    function CommitChoiceENSValid(uint uid_event, string memory promt_choice) voteExist(uid_event) voteActive(uid_event) YOVO(uid_event) canidateMustRegisterENS(promt_choice) public {
         Voting storage v = Votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
         require (voterHaveIDType(msg.sender,id_type_req));
-
-       address target_address = checkENS_User_by_string(promt_choice);
-       require (target_address != address(0), "promt_choice is not registred in ENS");
-
        _commitVote(uid_event,promt_choice, v.vote_type);
     }
 
@@ -252,8 +267,6 @@ contract Vote is Ownable, AccessControl {
 
        address target_address = checkENS_User_by_string(promt_choice);
        require (target_address != address(0), "promt_choice is not registred in ENS");
-
-
        bool checked_Passport = PC.CheckUserHavePassedTTP_ByAddr(target_address, id_type_req);
        require(checked_Passport == true, "candidate didn't process T3P check");
 
