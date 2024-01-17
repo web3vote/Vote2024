@@ -19,7 +19,7 @@ Let's see what properties have putin's elections? and what properties have web3 
 
 #### Comparsion
 
-1. Availability
+##### 1. Availability
 
 Putins election have availability -- vote can everyone, you can vote living in woods, you can vote from prison, you can vote from army,
 They don't care how people vote, they care only about *who count* votes. If they control them -- they control elections, which mean they can actually have a highly accessible elections therefore creating illusion of democratic society and illusion of the democratic Tsar.
@@ -32,11 +32,11 @@ If you want to choose **Navalny** than you can choose him and noone will procecu
 I can't say any of these system is fully available.
 
 
-2. Partition-Tolerance
+##### 2. Partition-Tolerance
 
 Both system is partition tolerable. "Izberkoms" are not depending from one another. Blockchain network nodes are also not depending from one another.
 
-3. Consistency
+##### 3. Consistency
 
 The major flaw in putins "elections" is consistency of data. Which we all have seen how in some regions there are "146%" for putinists.
 Which, of course, should make such elections not legitimate, but it does "work" in russia.
