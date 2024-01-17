@@ -98,6 +98,11 @@ contract Vote is Ownable, AccessControl {
        _; 
     }
 
+    modifier voteActive(uint uid_event) {
+        require(checkVotePhase(uid_event), "Vote is not active");
+        _;
+    }
+
 
 
 
@@ -203,10 +208,11 @@ contract Vote is Ownable, AccessControl {
     }
 
     // Free promt
-    function CommitChoiceFreePromt(uint uid_event,string memory promt_choice) voteExist(uid_event) public {
+    function CommitChoiceFreePromt(uint uid_event,string memory promt_choice) voteExist(uid_event) voteActive(uid_event) public {
+    
       //  require(checkVoteExist(uid_event), "vote does not exits");
-        Phase ph = getVoteStatus(uid_event);
-        require (ph == Phase.Started, "vote is not in active phase");
+      //  Phase ph = getVoteStatus(uid_event);
+      //  require (ph == Phase.Started, "vote is not in active phase");
         Voting storage v = Votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
 
@@ -226,10 +232,10 @@ contract Vote is Ownable, AccessControl {
 
 
     // additional check that promt_choice is registred in ENS and address
-    function CommitChoiceENSValid(uint uid_event, string memory promt_choice) voteExist(uid_event) public {
+    function CommitChoiceENSValid(uint uid_event, string memory promt_choice) voteExist(uid_event) voteExist(uid_event) public {
       //  require(checkVoteExist(uid_event), "vote does not exits");
-        Phase ph = getVoteStatus(uid_event);
-        require (ph == Phase.Started, "vote is not in active phase");
+      //  Phase ph = getVoteStatus(uid_event);
+      //  require (ph == Phase.Started, "vote is not in active phase");
         Voting storage v = Votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
 
@@ -247,10 +253,10 @@ contract Vote is Ownable, AccessControl {
     }
 
 
-    function CommitChoice_ENS_and_T3P(uint uid_event,string memory promt_choice) voteExist(uid_event) public {
+    function CommitChoice_ENS_and_T3P(uint uid_event,string memory promt_choice) voteExist(uid_event) voteActive(uid_event) public {
        // require(checkVoteExist(uid_event), "vote does not exits");
-        Phase ph = getVoteStatus(uid_event);
-        require (ph == Phase.Started, "vote is not in active phase");
+      //  Phase ph = getVoteStatus(uid_event);
+      //  require (ph == Phase.Started, "vote is not in active phase");
         Voting storage v = Votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
 
