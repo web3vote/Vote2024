@@ -96,7 +96,11 @@ Also in this way, users are not paying for the documents processing, making easy
 
 ## Votings itself
 
-
+1. Admin can create new votings.
+2. Voting contract should check that user addresses have passed T3P passport check without getting the actual info about user.
+3. User can have more than one passport. There are id_type in `Passport` contract. Voting can require single id_type for making choice commitment
+Example: all russians have internal passport and some of them have international passport. Which means we can create one Voting for "president of russia" and make it accessible to every russian, and make a separate Voting for choosing their representative in (EU,USA,World) and make it accessible to only those who have international passport.
+4. //TODO: continue
 
 
 
