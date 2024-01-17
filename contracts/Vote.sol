@@ -103,6 +103,13 @@ contract Vote is Ownable, AccessControl {
         _;
     }
 
+    // YOU VOTE ONLY ONCE
+    modifier YOVO(uint uid_event) {
+        bool user_voted = UsersVoted[uid_event][msg.sender];
+        require(user_voted == false, "user already voted");
+        _;
+    }
+
 
 
 
@@ -181,6 +188,13 @@ contract Vote is Ownable, AccessControl {
         return user_address;
     }
 
+    // check that vorer address have required id_type
+    function voterHaveIDType(address voter, Passport.PassportType id_type_req) public view returns(bool){
+        bool id_type_met =PC.CheckUserHaveTypeIDByAddr(voter, id_type_req);
+        require(id_type_met == true, "user does not registred requirement id type");
+        return id_type_met;
+    }
+
 
     function _commitVote(uint uid_event, string memory promt_choice, VoteType type_of_vote) internal{
        Voting storage v = Votings[uid_event];
@@ -208,7 +222,7 @@ contract Vote is Ownable, AccessControl {
     }
 
     // Free promt
-    function CommitChoiceFreePromt(uint uid_event,string memory promt_choice) voteExist(uid_event) voteActive(uid_event) public {
+    function CommitChoiceFreePromt(uint uid_event,string memory promt_choice) voteExist(uid_event) voteActive(uid_event) YOVO(uid_event) public {
     
       //  require(checkVoteExist(uid_event), "vote does not exits");
       //  Phase ph = getVoteStatus(uid_event);
@@ -216,10 +230,11 @@ contract Vote is Ownable, AccessControl {
         Voting storage v = Votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
 
-       bool id_type_met =PC.CheckUserHaveTypeIDByAddr(msg.sender, id_type_req);
-       require(id_type_met == true, "user does not registred requirement id type");
+       require (voterHaveIDType(msg.sender,id_type_req));
+       //bool id_type_met =PC.CheckUserHaveTypeIDByAddr(msg.sender, id_type_req);
+       //require(id_type_met == true, "user does not registred requirement id type");
 
-       require(v.vote_type == VoteType.FreePromt, "Invalid vote type");
+      // require(v.vote_type == VoteType.FreePromt, "Invalid vote type");
 
 
        bool user_voted = UsersVoted[uid_event][msg.sender];
@@ -232,19 +247,23 @@ contract Vote is Ownable, AccessControl {
 
 
     // additional check that promt_choice is registred in ENS and address
-    function CommitChoiceENSValid(uint uid_event, string memory promt_choice) voteExist(uid_event) voteExist(uid_event) public {
+    function CommitChoiceENSValid(uint uid_event, string memory promt_choice) voteExist(uid_event) voteActive(uid_event) YOVO(uid_event) public {
       //  require(checkVoteExist(uid_event), "vote does not exits");
       //  Phase ph = getVoteStatus(uid_event);
       //  require (ph == Phase.Started, "vote is not in active phase");
         Voting storage v = Votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
 
-       bool id_type_met =PC.CheckUserHaveTypeIDByAddr(msg.sender, id_type_req);
-       require(id_type_met == true, "user does not registred requirement id type");
+
+        require (voterHaveIDType(msg.sender,id_type_req));
+      // bool id_type_met =PC.CheckUserHaveTypeIDByAddr(msg.sender, id_type_req);
+      // require(id_type_met == true, "user does not registred requirement id type");
+
+
        bool user_voted = UsersVoted[uid_event][msg.sender];
        require(user_voted == false, "user already voted");
 
-       require(v.vote_type == VoteType.ENS_Valid, "Invalid vote type");
+      // require(v.vote_type == VoteType.ENS_Valid, "Invalid vote type");
 
        address target_address = checkENS_User_by_string(promt_choice);
        require (target_address != address(0), "promt_choice is not registred in ENS");
@@ -253,19 +272,22 @@ contract Vote is Ownable, AccessControl {
     }
 
 
-    function CommitChoice_ENS_and_T3P(uint uid_event,string memory promt_choice) voteExist(uid_event) voteActive(uid_event) public {
+    function CommitChoice_ENS_and_T3P(uint uid_event,string memory promt_choice) voteExist(uid_event) voteActive(uid_event) YOVO(uid_event) public {
        // require(checkVoteExist(uid_event), "vote does not exits");
       //  Phase ph = getVoteStatus(uid_event);
       //  require (ph == Phase.Started, "vote is not in active phase");
         Voting storage v = Votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
 
-       bool id_type_met =PC.CheckUserHaveTypeIDByAddr(msg.sender, id_type_req);
-       require(id_type_met == true, "user does not registred requirement id type");
+        require (voterHaveIDType(msg.sender,id_type_req));
+       //bool id_type_met =PC.CheckUserHaveTypeIDByAddr(msg.sender, id_type_req);
+       //require(id_type_met == true, "user does not registred requirement id type");
+
+
        bool user_voted = UsersVoted[uid_event][msg.sender];
        require(user_voted == false, "user already voted");
 
-       require(v.vote_type == VoteType.T3P_and_ENS, "Invalid vote type");
+     //  require(v.vote_type == VoteType.T3P_and_ENS, "Invalid vote type");
 
        address target_address = checkENS_User_by_string(promt_choice);
        require (target_address != address(0), "promt_choice is not registred in ENS");
