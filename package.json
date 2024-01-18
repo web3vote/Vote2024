@@ -12,10 +12,11 @@
   "dependencies": {
     "@ensdomains/ens-contracts": "^1.0.1",
     "@openzeppelin/contracts": "^5.0.1",
-    "hardhat": "^2.19.4"
+    "hardhat": "^2.19.4",
+    "solidity-coverage": "^0.8.5"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.0",
