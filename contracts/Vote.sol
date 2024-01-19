@@ -137,7 +137,7 @@ contract Vote is Ownable, AccessControl {
         Passport.PassportType id_type_required,
         VoteType vote_type
     ) public onlyOwner returns (uint) {
-        Voting storage v = Votings[uid_vote_global_counter];
+        Voting memory v;
         // Org memory o = Org(orginiser_or_ens, operator);
         // v._org = o;
         v.ens_domain = orginiser_or_ens;
@@ -149,6 +149,7 @@ contract Vote is Ownable, AccessControl {
         v.vote_type = vote_type;
         //Votings[uid_vote_global_counter] = v;
         Votings.push(v);
+        require(Votings.length > 0, "Votings empty");
         // Voting[] storage vbo = VotingsByOrg[orginiser_or_ens];
         //vbo.push(v);
         uid_vote_global_counter += 1; // how much in total
