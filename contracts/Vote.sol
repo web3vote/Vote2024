@@ -75,6 +75,7 @@ contract Vote is Ownable, AccessControl {
 
     //mapping (uint uid_vote => Voting) public Votings; // All voting event by id
     Voting[] Votings; // All voting event by uid
+    mapping(uint256 => Voting) votings;
     //mapping (address orginiser =>Voting[]) public VotingsByOrg;   // can be a few
 
     //mapping (Voting voting => mapping(string option => uint count)) public Results;
@@ -148,8 +149,7 @@ contract Vote is Ownable, AccessControl {
         v.uid = uid_vote_global_counter;
         v.vote_type = vote_type;
         //Votings[uid_vote_global_counter] = v;
-        Votings.push(v);
-        require(Votings.length > 0, "Votings empty");
+        votings[uid_vote_global_counter] = v;
         // Voting[] storage vbo = VotingsByOrg[orginiser_or_ens];
         //vbo.push(v);
         uid_vote_global_counter += 1; // how much in total
