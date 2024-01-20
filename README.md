@@ -117,3 +117,13 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.ts
 ```
+
+
+how to calculate gas:
+1. get gas usage by hh test, it will return how many gas used by function in gwei format
+2. get current gas price at https://etherscan.io/gastracker . e.g. 14 gwei
+3. gasUsed*gasPrice = gasTotal
+e.g. 163102 * 14 gwei = 2283428 gwei
+4. convert to eth. 2283428 gwei is 0,002283428 eth
+5. multiply cost in eth to the network coin. if system is deployed in eth and eth price is 2467$ then function `ProoveUserByTTP` cost 5,63$
+if it is matic network, (matic price is 0,77$) then cost of same function is 0,0017
