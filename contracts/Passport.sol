@@ -34,7 +34,7 @@ contract Passport is Ownable, AccessControl {
 
     struct User {
         address wallet;
-        string mrz_hash; //TODO: check if possible to convert to bytes32. do not forget about salt
+        bytes32 mrz_hash; //TODO: check if possible to convert to bytes32. do not forget about salt
         PassportType _passportType;
         // int valid_ttp_count;
         address[] ttp_proofs;
@@ -53,11 +53,11 @@ contract Passport is Ownable, AccessControl {
     // each address have array of other users who proove him. TODO: change to trust to a passport instead of address?
     mapping(address => address[]) private peer_trust_user;
 
-    mapping(address => string[]) private TTP_proofs; // each TTP service have array of proven mrz_hashes_strings.
+    mapping(address => bytes32[]) private TTP_proofs; // each TTP service have array of proven mrz_hashes_strings.
 
     mapping(address => mapping(PassportType => User)) private Users; // from address wallet to PassportType (Internal or International) to a UserCard. Remember that users can and most likely have at least two passports.
 
-    mapping(string hash_mrz_id => User) private PassportBook; // from mrz_hash_id to User
+    mapping(bytes32 hash_mrz_id => User) private PassportBook; // from mrz_hash_id to User
 
     mapping(address => TTP) TTPS; // mapping of Trusted 3rd parties allowed to proof id.
 
@@ -73,14 +73,14 @@ contract Passport is Ownable, AccessControl {
         string memory random_hash = bytes32ToString(random_data_hash);
         addNewTTP(msg.sender, msg.sender);
         // test call
-        ProoveUserByTTP(msg.sender, PassportType.International, random_hash);
+        ProoveUserByTTP(msg.sender, PassportType.International, random_data_hash);
     }
 
     // create user  TODO: consider removing
     function _createUser(
         address user_address,
         PassportType id_type,
-        string memory mrz_uid_hash
+        bytes32 mrz_uid_hash
     ) internal {
         User storage newUser = Users[user_address][id_type];
         newUser.wallet = user_address;
@@ -95,7 +95,7 @@ contract Passport is Ownable, AccessControl {
     function _create_and_proove_ttp(
         address user_address,
         PassportType id_type,
-        string memory mrz_uid_hash
+        bytes32 mrz_uid_hash
     ) internal {
         require(
             checkUserExistByHash(mrz_uid_hash) == false,
@@ -112,7 +112,7 @@ contract Passport is Ownable, AccessControl {
     }
 
     // increase ttp check   TODO: consider making public + check for TTPS auth..?
-    function _proove_ttp(string memory mrz_uid_hash) internal {
+    function _proove_ttp(bytes32 mrz_uid_hash) internal {
         require(
             checkUserExistByHash(mrz_uid_hash) == true,
             "user is not exist"
@@ -133,7 +133,7 @@ contract Passport is Ownable, AccessControl {
     function ProoveUserByTTP(
         address user,
         PassportType id_type,
-        string memory mrz_uid_hash
+        bytes32 mrz_uid_hash
     ) public onlyRole(T3P) {
         require(
             TTPS[msg.sender].service == msg.sender,
@@ -148,7 +148,7 @@ contract Passport is Ownable, AccessControl {
             _proove_ttp(mrz_uid_hash);
         }
 
-        string[] storage ttp_proofs = TTP_proofs[msg.sender];
+        bytes32[] storage ttp_proofs = TTP_proofs[msg.sender];
         ttp_proofs.push(mrz_uid_hash); // commit check to global array
         TTP_proofs[msg.sender] = ttp_proofs; // commit check to mapping from TTP to array of checks.
     }
@@ -182,7 +182,7 @@ contract Passport is Ownable, AccessControl {
 
     // really public?
     function checkUserExistByHash(
-        string memory mrz_uid_hash
+        bytes32 mrz_uid_hash
     ) internal view returns (bool) {
         User memory u = PassportBook[mrz_uid_hash];
         if (u.wallet != address(0)) {
@@ -215,7 +215,7 @@ contract Passport is Ownable, AccessControl {
 
     // really necessary?
     function checkUserHavePassedTTP_ByHash(
-        string memory mrz_uid_hash
+        bytes32 mrz_uid_hash
         // PassportType id_type
     ) public view returns (bool) {
         require(checkUserExistByHash(mrz_uid_hash), "user does not exist");
@@ -251,14 +251,14 @@ contract Passport is Ownable, AccessControl {
     // get all MRZ hashes which has been checked by this TTP address
     function _getTTP_checks_by_service(
         address service
-    ) internal view returns (string[] memory) {
-        string[] memory checks = TTP_proofs[service];
+    ) internal view returns (bytes32[] memory) {
+        bytes32[] memory checks = TTP_proofs[service];
         return checks;
     }
 
     // get array of ttp services which has been checked user passport by it's hash. length can be tracted as valid/invalid
     function _getTTP_proofs_of_user(
-        string memory mrz_uid_hash
+        bytes32 mrz_uid_hash
     ) internal view returns (address[] memory) {
         User memory u = PassportBook[mrz_uid_hash];
         address[] memory user_ttp_proofs = u.ttp_proofs; // array of addresses of ttp services which has been proofed user.

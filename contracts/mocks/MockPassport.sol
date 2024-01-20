@@ -8,7 +8,7 @@ contract MockPassport is Passport {
     function createUser(
         address user_address,
         PassportType id_type,
-        string memory mrz_uid_hash
+        bytes32 mrz_uid_hash
     ) public {
         super._createUser(user_address, id_type, mrz_uid_hash);
     }
@@ -16,16 +16,16 @@ contract MockPassport is Passport {
     function create_and_proove_ttp(
         address user_address,
         PassportType id_type,
-        string memory mrz_uid_hash
+        bytes32 mrz_uid_hash
     ) public {
         super._create_and_proove_ttp(user_address, id_type, mrz_uid_hash);
     }
 
-    function localCheckUserExistByHash(string memory mrz_uid_hash) public view {
+    function localCheckUserExistByHash(bytes32 mrz_uid_hash) public view {
         super.checkUserExistByHash(mrz_uid_hash);
     }
 
-    function proove_ttp(string memory mrz_uid_hash) public {
+    function proove_ttp(bytes32 mrz_uid_hash) public {
         super._proove_ttp(mrz_uid_hash);
     }
 
@@ -33,7 +33,7 @@ contract MockPassport is Passport {
         super._getTTP_checks_by_service(service);
     }
 
-    function getTTP_proofs_of_user(string memory mrz_uid_hash) public view {
+    function getTTP_proofs_of_user(bytes32 mrz_uid_hash) public view {
         super._getTTP_proofs_of_user(mrz_uid_hash);
     }
 }

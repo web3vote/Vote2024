@@ -11,19 +11,25 @@ describe("Passport test", async () => {
     let owner: SignerWithAddress
     let user: SignerWithAddress
     let passport: Contract
+    let mrz_0: ;
+    let mrz_1;
+    let mrz_empty;
 
     beforeEach(async () => {
         [owner, user] = await ethers.getSigners()
         let passportFactory = await ethers.getContractFactory("MockPassport")
         passport = await passportFactory.deploy()
         await passport.deployed()
+        mrz_0 = await passport.connect(user).GetKeccakHash("0x0")
+        mrz_1 = await passport.connect(user).GetKeccakHash("0x1")
+        mrz_empty = passport.connect(user).GetKeccakHash("")
     })
 
     it("⭕ Should NOT call ProoveUserByTTP under regular user", async () => {
-        await expect(passport.connect(user).ProoveUserByTTP(user.address, 0, "0x0")).to.be.reverted
+        await expect(passport.connect(user).ProoveUserByTTP(user.address, 0, mrz_0)).to.be.reverted
     })
     it("📄 Should call ProoveUserByTTP with empty mrz_uid_hash", async () => {
-        await passport.createUser(user.address, 0, "")
+        await passport.createUser(user.address, 0, mrz_1)
         await passport.connect(owner).ProoveUserByTTP(user.address, 0, "")
     })
     it("📄 Should call ProoveUserByTTP", async () => {
