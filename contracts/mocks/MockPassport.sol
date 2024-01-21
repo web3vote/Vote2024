@@ -21,10 +21,6 @@ contract MockPassport is Passport {
         super._create_and_proove_ttp(user_address, id_type, mrz_uid_hash);
     }
 
-    function localCheckUserExistByHash(string memory mrz_uid_hash) public view {
-        super.checkUserExistByHash(mrz_uid_hash);
-    }
-
     function proove_ttp(string memory mrz_uid_hash) public {
         super._proove_ttp(mrz_uid_hash);
     }
