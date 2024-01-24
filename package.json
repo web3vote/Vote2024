@@ -12,6 +12,7 @@
   "dependencies": {
     "@ensdomains/ens-contracts": "^1.0.1",
     "@openzeppelin/contracts": "^5.0.1",
+    "ethers": "^5.6.4",
     "hardhat": "^2.19.4",
     "solidity-coverage": "^0.8.5"
   },
