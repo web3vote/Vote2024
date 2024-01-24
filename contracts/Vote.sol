@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 //import "@ensdomains/ens-contracts/contracts/resolvers/PublicResolver.sol";
 
 import "./Passport.sol";
+import "hardhat/console.sol";
 
 //import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 //import "../node_modules/@openzeppelin/contracts/access/AccessControl.sol";
@@ -73,9 +74,7 @@ contract Vote is Ownable, AccessControl {
         //  mapping(address => bool) users_voted;
     }
 
-    //mapping (uint uid_vote => Voting) public Votings; // All voting event by id
-    Voting[] Votings; // All voting event by uid
-    mapping(uint256 => Voting) votings;
+    mapping(uint256 => Voting) public votings;
     //mapping (address orginiser =>Voting[]) public VotingsByOrg;   // can be a few
 
     //mapping (Voting voting => mapping(string option => uint count)) public Results;
@@ -160,7 +159,7 @@ contract Vote is Ownable, AccessControl {
         uint uid_event
     ) public view voteExist(uid_event) returns (bool) {
         // require(checkVoteExist(uid_event), "vote does not exits");
-        Voting memory v = Votings[uid_event];
+        Voting memory v = votings[uid_event];
         uint start_date = v.start_date;
         uint ttv = v.time_to_vote_hours;
         uint end_date = start_date + ttv * 1 hours;
@@ -175,9 +174,9 @@ contract Vote is Ownable, AccessControl {
 
     function getVoteStatus(
         uint uid_event
-    ) public view voteExist(uid_event) returns (Phase) {
+    ) public view voteExist(uid_event) returns (Phase ph) {
         // require(checkVoteExist(uid_event), "vote does not exits");
-        Voting memory v = Votings[uid_event];
+        Voting memory v = votings[uid_event];
         uint start_date = v.start_date;
         uint ttv = v.time_to_vote_hours;
         uint end_date = start_date + ttv * 1 hours;
@@ -195,7 +194,7 @@ contract Vote is Ownable, AccessControl {
     }
 
     function checkVoteExist(uint uid_event) public view returns (bool) {
-        Voting memory v = Votings[uid_event];
+        Voting memory v = votings[uid_event];
         uint sd = v.start_date;
         if (sd == 0) {
             return false;
@@ -230,7 +229,7 @@ contract Vote is Ownable, AccessControl {
         string memory promt_choice,
         VoteType type_of_vote
     ) internal {
-        Voting storage v = Votings[uid_event];
+        Voting memory v = votings[uid_event];
 
         require(v.vote_type == type_of_vote, "wrong vote type");
 
@@ -253,7 +252,7 @@ contract Vote is Ownable, AccessControl {
         UsersVoted[uid_event][msg.sender] = true;
         v.votes_total += 1;
 
-        Votings[uid_event] = v;
+        votings[uid_event] = v;
 
         // Emit Events
         if (type_of_vote == VoteType.FreePromt) {
@@ -287,7 +286,7 @@ contract Vote is Ownable, AccessControl {
         uint uid_event,
         string memory promt_choice
     ) public voteExist(uid_event) voteActive(uid_event) YOVO(uid_event) {
-        Voting storage v = Votings[uid_event];
+        Voting memory v = votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
         require(voterHaveIDType(msg.sender, id_type_req));
         _commitVote(uid_event, promt_choice, v.vote_type);
@@ -304,7 +303,7 @@ contract Vote is Ownable, AccessControl {
         YOVO(uid_event)
         canidateMustRegisterENS(promt_choice)
     {
-        Voting storage v = Votings[uid_event];
+        Voting memory v = votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
         require(voterHaveIDType(msg.sender, id_type_req));
         _commitVote(uid_event, promt_choice, v.vote_type);
@@ -314,7 +313,7 @@ contract Vote is Ownable, AccessControl {
         uint uid_event,
         string memory promt_choice
     ) public voteExist(uid_event) voteActive(uid_event) YOVO(uid_event) {
-        Voting storage v = Votings[uid_event];
+        Voting memory v = votings[uid_event];
         Passport.PassportType id_type_req = v.id_type_required;
         require(voterHaveIDType(msg.sender, id_type_req));
 
