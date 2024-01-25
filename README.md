@@ -102,7 +102,13 @@ Also in this way, users are not paying for the documents processing, making easy
 Example: all russians have internal passport and some of them have international passport. Which means we can create one Voting for "president of russia" and make it accessible to every russian, and make a separate Voting for choosing their representative in (EU,USA,World) and make it accessible to only those who have international passport.
 4. //TODO: continue
 
-
+# Go artifacts
+```
+solc --abi --bin ./contracts/Passport.sol -o build ..=.. --overwrite --allow-paths *,/node_modules/,
+abigen --abi="build/Passport.abi" --pkg=EPassport --out="./go/EPassport.go"
+solc --abi --bin ./contracts/Vote.sol -o build ..=.. --overwrite --allow-paths *,/node_modules/,
+abigen --abi="build/Vote.abi" --pkg=Vote --out="./go/Vote.go"
+```
 
 # Sample Hardhat Project
 
