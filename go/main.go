@@ -34,7 +34,7 @@ type RequestBody struct {
     isValid := ValidateMRZ(requestBody.MRZ)
 
     // Get Keccak hash from MRZ (replace with your actual logic)
-    keccakHash := GetKeccakHash(requestBody.MRZ)
+    keccakHash := GetKeccakHashInput(requestBody.MRZ)
 
     // Submit hash to Solidity contract (replace with your actual contract interaction)
     submitResult := SubmitToContract(keccakHash)
@@ -65,12 +65,30 @@ type RequestBody struct {
    }
    
 
+// listen localhost:8000
 func main() {
     router := mux.NewRouter()
     router.HandleFunc("/process-mrz", ProcessMRZ).Methods("POST")
+	log.Println("starting web server")
 
     log.Fatal(http.ListenAndServe(":8000", router))
    }
    
 
+//Appendix
+
+func ValidateMRZ(mrz string) (bool) {
+	var check bool
+	return check
+}
+
+
+func GetKeccakHashInput(input string) (string){
+	//var hash string
+	return input
+}
+
+func SubmitToContract(input string) (string) {
+	return input
+}
 
