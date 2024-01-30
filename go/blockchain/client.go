@@ -11,6 +11,11 @@ import (
 
 	"github.com/MoonSHRD/TelegramNFT-Wizard-Contracts/go/FactoryNFT"
 	SingletonNFT "github.com/MoonSHRD/TelegramNFT-Wizard-Contracts/go/SingletonNFT"
+
+	epassport "github.com/web3vote/Vote2024/go/EPassport"
+
+	VoteGo "github.com/web3vote/Vote2024/go/Vote"
+
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -21,6 +26,8 @@ type Client struct {
 	Passport  *passport.PassportSession
 	Signleton *SingletonNFT.SingletonNFTSession
 	Factory   *FactoryNFT.FactoryNFTSession
+	EPassportSession *epassport.EPassportSession
+	VoteSession *VoteGo.VoteSession
 }
 
 type Config struct {

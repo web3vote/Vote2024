@@ -1,6 +1,10 @@
 github.com/DataDog/zstd v1.4.5 h1:EndNeuB0l9syBZhut0wns3gV1hL8zX8LIu6ZiVHWLIQ=
 github.com/Microsoft/go-winio v0.6.1 h1:9/kr64B9VUZrLm5YYwbGtUJnMgqWVOdUAXu6Migciow=
 github.com/Microsoft/go-winio v0.6.1/go.mod h1:LRdKpFKfdobln8UmuiYcKPot9D2v6svN5+sAH+4kjUM=
+github.com/MoonSHRD/IKY-telegram-bot v1.0.1 h1:Us65jTTdMjyF1XU8D7oVWRKZ0AV5rdsk0f1jBsoQKn4=
+github.com/MoonSHRD/IKY-telegram-bot v1.0.1/go.mod h1:oR7+q9qz0IivIxTHN58xQRIA+dg+1dLXwrNH8rnnTFc=
+github.com/MoonSHRD/TelegramNFT-Wizard-Contracts v0.4.0 h1:QxzNbOCyq4MzpU5RGnZNbIV5LS8QOYMpWMd/VzehvyA=
+github.com/MoonSHRD/TelegramNFT-Wizard-Contracts v0.4.0/go.mod h1:FINo9dc++NH/xdhoy8YJM9nZiEIlIs38lX0lgCZeBwY=
 github.com/StackExchange/wmi v1.2.1 h1:VIkavFPXSjcnS+O8yTq7NI32k0R5Aj+v39y29VYDOSA=
 github.com/StackExchange/wmi v1.2.1/go.mod h1:rcmrprowKIVzvc+NUiLncP2uuArMWLCbu9SBzvHz7e8=
 github.com/VictoriaMetrics/fastcache v1.12.1 h1:i0mICQuojGDL3KblA7wUNlY5lOK6a4bwt3uRKnkZU40=

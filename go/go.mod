@@ -1,8 +1,13 @@
-module web3vote
+module github.com/web3vote/Vote2024/go
 
 go 1.19
 
-require github.com/ethereum/go-ethereum v1.13.11
+require (
+	github.com/MoonSHRD/IKY-telegram-bot v1.0.1
+	github.com/MoonSHRD/TelegramNFT-Wizard-Contracts v0.4.0
+	github.com/ethereum/go-ethereum v1.13.11
+	github.com/gorilla/mux v1.8.1
+)
 
 require (
 	github.com/Microsoft/go-winio v0.6.1 // indirect
@@ -18,7 +23,6 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/holiman/uint256 v1.2.4 // indirect
 	github.com/mmcloughlin/addchain v0.4.0 // indirect
