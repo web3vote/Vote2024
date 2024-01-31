@@ -7,9 +7,6 @@ import (
 	"math/big"
 	"time"
 
-	//"github.com/MoonSHRD/TelegramNFT-Wizard-Contracts/go/FactoryNFT"
-	//SingletonNFT "github.com/MoonSHRD/TelegramNFT-Wizard-Contracts/go/SingletonNFT"
-
 	epassport "github.com/web3vote/Vote2024/go/EPassport"
 
 	VoteGo "github.com/web3vote/Vote2024/go/Vote"
@@ -21,9 +18,6 @@ import (
 )
 
 type Client struct {
-	//Passport  *passport.PassportSession
-	//Signleton *SingletonNFT.SingletonNFTSession
-	//Factory   *FactoryNFT.FactoryNFTSession
 	EPassport *epassport.EPassportSession
 	Vote *VoteGo.VoteSession
 }
@@ -79,49 +73,15 @@ func NewClient(config Config) (*Client, error) {
 	// new epassport contract
 	epassportCenter, err := epassport.NewEPassport(common.HexToAddress(config.EPassportAddress), client)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to instantiate a TGPassport contract: %v", err)
+		return nil, fmt.Errorf("Failed to instantiate a EPassport contract: %v", err)
 	}
 
 
 	// new vote contract
 	voteCenter, err := VoteGo.NewVote(common.HexToAddress(config.VoteAddress), client)
 		if err != nil {
-			return nil, fmt.Errorf("Failed to instantiate a TGPassport contract: %v", err)
+			return nil, fmt.Errorf("Failed to instantiate a Vote contract: %v", err)
 		}
-
-
-	/*
-	singletonCollection, err := SingletonNFT.NewSingletonNFT(common.HexToAddress(config.SingletonAddress), client)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to instantiate a SingletonNFT contract: %v", err)
-	}
-
-	factoryCollection, err := FactoryNFT.NewFactoryNFT(common.HexToAddress(config.FactoryAddress), client)
-	if err != nil {
-		return nil, fmt.Errorf("Failed to instantiate a SingletonNFT contract: %v", err)
-	}
-	*/
-
-
-
-	/*
-	// Wrap the Passport contract instance into a session
-	passport := &passport.PassportSession{
-		Contract: passportCenter,
-		CallOpts: bind.CallOpts{
-			Pending: true,
-			From:    auth.From,
-			Context: context.Background(),
-		},
-		TransactOpts: bind.TransactOpts{
-			From:     auth.From,
-			Signer:   auth.Signer,
-			GasLimit: 0,   // 0 automatically estimates gas limit
-			GasPrice: nil, // nil automatically suggests gas price
-			Context:  context.Background(),
-		},
-	}
-	*/
 
 
 		// Wrap the Passport contract instance into a session
@@ -142,11 +102,7 @@ func NewClient(config Config) (*Client, error) {
 		}
 
 
-
-
-
-
-				// Wrap the Passport contract instance into a session
+		// Wrap the Passport contract instance into a session
 		vote := &VoteGo.VoteSession{
 					Contract: voteCenter,
 					CallOpts: bind.CallOpts{
@@ -163,58 +119,15 @@ func NewClient(config Config) (*Client, error) {
 					},
 				}
 
-
-
-
-
-	/*
-
-	//Wrap SingletonNFT contract instance into a session
-	singleton := &SingletonNFT.SingletonNFTSession{
-		Contract: singletonCollection,
-		CallOpts: bind.CallOpts{
-			Pending: true,
-			From:    auth.From,
-			Context: context.Background(),
-		},
-		TransactOpts: bind.TransactOpts{
-			From:      auth.From,
-			Signer:    auth.Signer,
-			GasLimit:  0,
-			GasFeeCap: nil,
-			GasTipCap: nil,
-			Context:   context.Background(),
-		},
-	}
-
-	//Wrap FactoryNFT contract instance into a session
-	factory := &FactoryNFT.FactoryNFTSession{
-		Contract: factoryCollection,
-		CallOpts: bind.CallOpts{
-			Pending: true,
-			From:    auth.From,
-			Context: context.Background(),
-		},
-		TransactOpts: bind.TransactOpts{
-			From:      auth.From,
-			Signer:    auth.Signer,
-			GasLimit:  0,
-			GasFeeCap: nil,
-			GasTipCap: nil,
-			Context:   context.Background(),
-		},
-	}
-
-	*/
-
 	return &Client{
 		//Passport:  passport,
 		EPassport: epassport,
 		Vote: vote,
 
-
 	}, nil
 }
+
+
 
 func (client *Client) GetHash(input string) ([32]byte, error){
 	output,err := client.EPassport.GetKeccakHash(input)
