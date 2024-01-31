@@ -86,20 +86,25 @@ contract Vote is Ownable, AccessControl {
     event FreeVoteCommited(
         uint indexed uid_event,
         string promt,
-        bytes32 promt_hash,
+        bytes32 indexed promt_hash,
         uint candidate_total_votes
     );
     event ENSVoteCommited(
         uint indexed uit_event,
         string promt,
-        bytes32 promt_hash,
+        bytes32 indexed promt_hash,
         uint candidate_total_votes
     );
     event ENS_T3P_VoteCommited(
         uint indexed uit_event,
         string promt,
-        bytes32 promt_hash,
+        bytes32 indexed promt_hash,
         uint candidate_total_votes
+    );
+    event VoteCreated(
+        uint uid_event,
+        VoteType vote_type,
+        Passport.PassportType id_type_required
     );
 
     // Modifiers
@@ -152,6 +157,7 @@ contract Vote is Ownable, AccessControl {
         // Voting[] storage vbo = VotingsByOrg[orginiser_or_ens];
         //vbo.push(v);
         uid_vote_global_counter += 1; // how much in total
+        emit VoteCreated(uid_vote_global_counter - 1,v.vote_type,v.id_type_required);
         return uid_vote_global_counter - 1; // real uid is position in array which mean real uid starts with 0
     }
 
