@@ -3,7 +3,6 @@ module github.com/web3vote/Vote2024/go
 go 1.19
 
 require (
-	github.com/MoonSHRD/IKY-telegram-bot v1.0.1
 	github.com/MoonSHRD/TelegramNFT-Wizard-Contracts v0.4.0
 	github.com/ethereum/go-ethereum v1.13.11
 	github.com/gorilla/mux v1.8.1
