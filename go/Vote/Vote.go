@@ -31,7 +31,7 @@ var (
 
 // VoteMetaData contains all meta data concerning the Vote contract.
 var VoteMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"passport_contract\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"AccessControlBadConfirmation\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"neededRole\",\"type\":\"bytes32\"}],\"name\":\"AccessControlUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"uit_event\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"promt\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"promt_hash\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"candidate_total_votes\",\"type\":\"uint256\"}],\"name\":\"ENSVoteCommited\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"uit_event\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"promt\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"promt_hash\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"candidate_total_votes\",\"type\":\"uint256\"}],\"name\":\"ENS_T3P_VoteCommited\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"promt\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"bytes32\",\"name\":\"promt_hash\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"candidate_total_votes\",\"type\":\"uint256\"}],\"name\":\"FreeVoteCommited\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"promt_choice\",\"type\":\"string\"}],\"name\":\"CommitChoiceENSValid\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"promt_choice\",\"type\":\"string\"}],\"name\":\"CommitChoiceFreePromt\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"promt_choice\",\"type\":\"string\"}],\"name\":\"CommitChoice_ENS_and_T3P\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"T3P\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_vote\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"option\",\"type\":\"bytes32\"}],\"name\":\"VoteResultsFreePromt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"count\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"}],\"name\":\"checkENS_User_by_string\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"}],\"name\":\"checkVoteExist\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"}],\"name\":\"checkVotePhase\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"orginiser_or_ens\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"start_date_timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"vote_hours\",\"type\":\"uint256\"},{\"internalType\":\"enumPassport.PassportType\",\"name\":\"id_type_required\",\"type\":\"uint8\"},{\"internalType\":\"enumVote.VoteType\",\"name\":\"vote_type\",\"type\":\"uint8\"}],\"name\":\"createNewVote\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"}],\"name\":\"getVoteStatus\",\"outputs\":[{\"internalType\":\"enumVote.Phase\",\"name\":\"ph\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"moderator\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"callerConfirmation\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"}],\"name\":\"resolve\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"votings\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"uid\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"ens_domain\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"desc\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"start_date\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"time_to_vote_hours\",\"type\":\"uint256\"},{\"internalType\":\"enumPassport.PassportType\",\"name\":\"id_type_required\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"votes_total\",\"type\":\"uint256\"},{\"internalType\":\"enumVote.VoteType\",\"name\":\"vote_type\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"passport_contract\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"AccessControlBadConfirmation\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"neededRole\",\"type\":\"bytes32\"}],\"name\":\"AccessControlUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"OwnableInvalidOwner\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"OwnableUnauthorizedAccount\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"uit_event\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"promt\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"promt_hash\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"candidate_total_votes\",\"type\":\"uint256\"}],\"name\":\"ENSVoteCommited\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"uit_event\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"promt\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"promt_hash\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"candidate_total_votes\",\"type\":\"uint256\"}],\"name\":\"ENS_T3P_VoteCommited\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"promt\",\"type\":\"string\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"promt_hash\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"candidate_total_votes\",\"type\":\"uint256\"}],\"name\":\"FreeVoteCommited\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"enumVote.VoteType\",\"name\":\"vote_type\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"enumPassport.PassportType\",\"name\":\"id_type_required\",\"type\":\"uint8\"}],\"name\":\"VoteCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"promt_choice\",\"type\":\"string\"}],\"name\":\"CommitChoiceENSValid\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"promt_choice\",\"type\":\"string\"}],\"name\":\"CommitChoiceFreePromt\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"promt_choice\",\"type\":\"string\"}],\"name\":\"CommitChoice_ENS_and_T3P\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"T3P\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_vote\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"option\",\"type\":\"bytes32\"}],\"name\":\"VoteResultsFreePromt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"count\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"}],\"name\":\"checkENS_User_by_string\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"}],\"name\":\"checkVoteExist\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"}],\"name\":\"checkVotePhase\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"orginiser_or_ens\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"start_date_timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"vote_hours\",\"type\":\"uint256\"},{\"internalType\":\"enumPassport.PassportType\",\"name\":\"id_type_required\",\"type\":\"uint8\"},{\"internalType\":\"enumVote.VoteType\",\"name\":\"vote_type\",\"type\":\"uint8\"}],\"name\":\"createNewVote\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"uid_event\",\"type\":\"uint256\"}],\"name\":\"getVoteStatus\",\"outputs\":[{\"internalType\":\"enumVote.Phase\",\"name\":\"ph\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"moderator\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"callerConfirmation\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"node\",\"type\":\"bytes32\"}],\"name\":\"resolve\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"votings\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"uid\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"ens_domain\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"desc\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"start_date\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"time_to_vote_hours\",\"type\":\"uint256\"},{\"internalType\":\"enumPassport.PassportType\",\"name\":\"id_type_required\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"votes_total\",\"type\":\"uint256\"},{\"internalType\":\"enumVote.VoteType\",\"name\":\"vote_type\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // VoteABI is the input ABI used to generate the binding from.
@@ -930,15 +930,20 @@ type VoteENSVoteCommited struct {
 
 // FilterENSVoteCommited is a free log retrieval operation binding the contract event 0xbfdc205034116aadc8301a4690f813afc2105a39fc790bc22c74f36524af74af.
 //
-// Solidity: event ENSVoteCommited(uint256 indexed uit_event, string promt, bytes32 promt_hash, uint256 candidate_total_votes)
-func (_Vote *VoteFilterer) FilterENSVoteCommited(opts *bind.FilterOpts, uit_event []*big.Int) (*VoteENSVoteCommitedIterator, error) {
+// Solidity: event ENSVoteCommited(uint256 indexed uit_event, string promt, bytes32 indexed promt_hash, uint256 candidate_total_votes)
+func (_Vote *VoteFilterer) FilterENSVoteCommited(opts *bind.FilterOpts, uit_event []*big.Int, promt_hash [][32]byte) (*VoteENSVoteCommitedIterator, error) {
 
 	var uit_eventRule []interface{}
 	for _, uit_eventItem := range uit_event {
 		uit_eventRule = append(uit_eventRule, uit_eventItem)
 	}
 
-	logs, sub, err := _Vote.contract.FilterLogs(opts, "ENSVoteCommited", uit_eventRule)
+	var promt_hashRule []interface{}
+	for _, promt_hashItem := range promt_hash {
+		promt_hashRule = append(promt_hashRule, promt_hashItem)
+	}
+
+	logs, sub, err := _Vote.contract.FilterLogs(opts, "ENSVoteCommited", uit_eventRule, promt_hashRule)
 	if err != nil {
 		return nil, err
 	}
@@ -947,15 +952,20 @@ func (_Vote *VoteFilterer) FilterENSVoteCommited(opts *bind.FilterOpts, uit_even
 
 // WatchENSVoteCommited is a free log subscription operation binding the contract event 0xbfdc205034116aadc8301a4690f813afc2105a39fc790bc22c74f36524af74af.
 //
-// Solidity: event ENSVoteCommited(uint256 indexed uit_event, string promt, bytes32 promt_hash, uint256 candidate_total_votes)
-func (_Vote *VoteFilterer) WatchENSVoteCommited(opts *bind.WatchOpts, sink chan<- *VoteENSVoteCommited, uit_event []*big.Int) (event.Subscription, error) {
+// Solidity: event ENSVoteCommited(uint256 indexed uit_event, string promt, bytes32 indexed promt_hash, uint256 candidate_total_votes)
+func (_Vote *VoteFilterer) WatchENSVoteCommited(opts *bind.WatchOpts, sink chan<- *VoteENSVoteCommited, uit_event []*big.Int, promt_hash [][32]byte) (event.Subscription, error) {
 
 	var uit_eventRule []interface{}
 	for _, uit_eventItem := range uit_event {
 		uit_eventRule = append(uit_eventRule, uit_eventItem)
 	}
 
-	logs, sub, err := _Vote.contract.WatchLogs(opts, "ENSVoteCommited", uit_eventRule)
+	var promt_hashRule []interface{}
+	for _, promt_hashItem := range promt_hash {
+		promt_hashRule = append(promt_hashRule, promt_hashItem)
+	}
+
+	logs, sub, err := _Vote.contract.WatchLogs(opts, "ENSVoteCommited", uit_eventRule, promt_hashRule)
 	if err != nil {
 		return nil, err
 	}
@@ -989,7 +999,7 @@ func (_Vote *VoteFilterer) WatchENSVoteCommited(opts *bind.WatchOpts, sink chan<
 
 // ParseENSVoteCommited is a log parse operation binding the contract event 0xbfdc205034116aadc8301a4690f813afc2105a39fc790bc22c74f36524af74af.
 //
-// Solidity: event ENSVoteCommited(uint256 indexed uit_event, string promt, bytes32 promt_hash, uint256 candidate_total_votes)
+// Solidity: event ENSVoteCommited(uint256 indexed uit_event, string promt, bytes32 indexed promt_hash, uint256 candidate_total_votes)
 func (_Vote *VoteFilterer) ParseENSVoteCommited(log types.Log) (*VoteENSVoteCommited, error) {
 	event := new(VoteENSVoteCommited)
 	if err := _Vote.contract.UnpackLog(event, "ENSVoteCommited", log); err != nil {
@@ -1077,15 +1087,20 @@ type VoteENST3PVoteCommited struct {
 
 // FilterENST3PVoteCommited is a free log retrieval operation binding the contract event 0x34a30b725ce5926dad1fb8ea9b85937b6cdc418faef7eb4b1295d6071e4b6212.
 //
-// Solidity: event ENS_T3P_VoteCommited(uint256 indexed uit_event, string promt, bytes32 promt_hash, uint256 candidate_total_votes)
-func (_Vote *VoteFilterer) FilterENST3PVoteCommited(opts *bind.FilterOpts, uit_event []*big.Int) (*VoteENST3PVoteCommitedIterator, error) {
+// Solidity: event ENS_T3P_VoteCommited(uint256 indexed uit_event, string promt, bytes32 indexed promt_hash, uint256 candidate_total_votes)
+func (_Vote *VoteFilterer) FilterENST3PVoteCommited(opts *bind.FilterOpts, uit_event []*big.Int, promt_hash [][32]byte) (*VoteENST3PVoteCommitedIterator, error) {
 
 	var uit_eventRule []interface{}
 	for _, uit_eventItem := range uit_event {
 		uit_eventRule = append(uit_eventRule, uit_eventItem)
 	}
 
-	logs, sub, err := _Vote.contract.FilterLogs(opts, "ENS_T3P_VoteCommited", uit_eventRule)
+	var promt_hashRule []interface{}
+	for _, promt_hashItem := range promt_hash {
+		promt_hashRule = append(promt_hashRule, promt_hashItem)
+	}
+
+	logs, sub, err := _Vote.contract.FilterLogs(opts, "ENS_T3P_VoteCommited", uit_eventRule, promt_hashRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1094,15 +1109,20 @@ func (_Vote *VoteFilterer) FilterENST3PVoteCommited(opts *bind.FilterOpts, uit_e
 
 // WatchENST3PVoteCommited is a free log subscription operation binding the contract event 0x34a30b725ce5926dad1fb8ea9b85937b6cdc418faef7eb4b1295d6071e4b6212.
 //
-// Solidity: event ENS_T3P_VoteCommited(uint256 indexed uit_event, string promt, bytes32 promt_hash, uint256 candidate_total_votes)
-func (_Vote *VoteFilterer) WatchENST3PVoteCommited(opts *bind.WatchOpts, sink chan<- *VoteENST3PVoteCommited, uit_event []*big.Int) (event.Subscription, error) {
+// Solidity: event ENS_T3P_VoteCommited(uint256 indexed uit_event, string promt, bytes32 indexed promt_hash, uint256 candidate_total_votes)
+func (_Vote *VoteFilterer) WatchENST3PVoteCommited(opts *bind.WatchOpts, sink chan<- *VoteENST3PVoteCommited, uit_event []*big.Int, promt_hash [][32]byte) (event.Subscription, error) {
 
 	var uit_eventRule []interface{}
 	for _, uit_eventItem := range uit_event {
 		uit_eventRule = append(uit_eventRule, uit_eventItem)
 	}
 
-	logs, sub, err := _Vote.contract.WatchLogs(opts, "ENS_T3P_VoteCommited", uit_eventRule)
+	var promt_hashRule []interface{}
+	for _, promt_hashItem := range promt_hash {
+		promt_hashRule = append(promt_hashRule, promt_hashItem)
+	}
+
+	logs, sub, err := _Vote.contract.WatchLogs(opts, "ENS_T3P_VoteCommited", uit_eventRule, promt_hashRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1136,7 +1156,7 @@ func (_Vote *VoteFilterer) WatchENST3PVoteCommited(opts *bind.WatchOpts, sink ch
 
 // ParseENST3PVoteCommited is a log parse operation binding the contract event 0x34a30b725ce5926dad1fb8ea9b85937b6cdc418faef7eb4b1295d6071e4b6212.
 //
-// Solidity: event ENS_T3P_VoteCommited(uint256 indexed uit_event, string promt, bytes32 promt_hash, uint256 candidate_total_votes)
+// Solidity: event ENS_T3P_VoteCommited(uint256 indexed uit_event, string promt, bytes32 indexed promt_hash, uint256 candidate_total_votes)
 func (_Vote *VoteFilterer) ParseENST3PVoteCommited(log types.Log) (*VoteENST3PVoteCommited, error) {
 	event := new(VoteENST3PVoteCommited)
 	if err := _Vote.contract.UnpackLog(event, "ENS_T3P_VoteCommited", log); err != nil {
@@ -1224,15 +1244,20 @@ type VoteFreeVoteCommited struct {
 
 // FilterFreeVoteCommited is a free log retrieval operation binding the contract event 0x25478a6e22c5e96409b84d17c38a6a747d52a504443b11294f187fb1692079b0.
 //
-// Solidity: event FreeVoteCommited(uint256 indexed uid_event, string promt, bytes32 promt_hash, uint256 candidate_total_votes)
-func (_Vote *VoteFilterer) FilterFreeVoteCommited(opts *bind.FilterOpts, uid_event []*big.Int) (*VoteFreeVoteCommitedIterator, error) {
+// Solidity: event FreeVoteCommited(uint256 indexed uid_event, string promt, bytes32 indexed promt_hash, uint256 candidate_total_votes)
+func (_Vote *VoteFilterer) FilterFreeVoteCommited(opts *bind.FilterOpts, uid_event []*big.Int, promt_hash [][32]byte) (*VoteFreeVoteCommitedIterator, error) {
 
 	var uid_eventRule []interface{}
 	for _, uid_eventItem := range uid_event {
 		uid_eventRule = append(uid_eventRule, uid_eventItem)
 	}
 
-	logs, sub, err := _Vote.contract.FilterLogs(opts, "FreeVoteCommited", uid_eventRule)
+	var promt_hashRule []interface{}
+	for _, promt_hashItem := range promt_hash {
+		promt_hashRule = append(promt_hashRule, promt_hashItem)
+	}
+
+	logs, sub, err := _Vote.contract.FilterLogs(opts, "FreeVoteCommited", uid_eventRule, promt_hashRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1241,15 +1266,20 @@ func (_Vote *VoteFilterer) FilterFreeVoteCommited(opts *bind.FilterOpts, uid_eve
 
 // WatchFreeVoteCommited is a free log subscription operation binding the contract event 0x25478a6e22c5e96409b84d17c38a6a747d52a504443b11294f187fb1692079b0.
 //
-// Solidity: event FreeVoteCommited(uint256 indexed uid_event, string promt, bytes32 promt_hash, uint256 candidate_total_votes)
-func (_Vote *VoteFilterer) WatchFreeVoteCommited(opts *bind.WatchOpts, sink chan<- *VoteFreeVoteCommited, uid_event []*big.Int) (event.Subscription, error) {
+// Solidity: event FreeVoteCommited(uint256 indexed uid_event, string promt, bytes32 indexed promt_hash, uint256 candidate_total_votes)
+func (_Vote *VoteFilterer) WatchFreeVoteCommited(opts *bind.WatchOpts, sink chan<- *VoteFreeVoteCommited, uid_event []*big.Int, promt_hash [][32]byte) (event.Subscription, error) {
 
 	var uid_eventRule []interface{}
 	for _, uid_eventItem := range uid_event {
 		uid_eventRule = append(uid_eventRule, uid_eventItem)
 	}
 
-	logs, sub, err := _Vote.contract.WatchLogs(opts, "FreeVoteCommited", uid_eventRule)
+	var promt_hashRule []interface{}
+	for _, promt_hashItem := range promt_hash {
+		promt_hashRule = append(promt_hashRule, promt_hashItem)
+	}
+
+	logs, sub, err := _Vote.contract.WatchLogs(opts, "FreeVoteCommited", uid_eventRule, promt_hashRule)
 	if err != nil {
 		return nil, err
 	}
@@ -1283,7 +1313,7 @@ func (_Vote *VoteFilterer) WatchFreeVoteCommited(opts *bind.WatchOpts, sink chan
 
 // ParseFreeVoteCommited is a log parse operation binding the contract event 0x25478a6e22c5e96409b84d17c38a6a747d52a504443b11294f187fb1692079b0.
 //
-// Solidity: event FreeVoteCommited(uint256 indexed uid_event, string promt, bytes32 promt_hash, uint256 candidate_total_votes)
+// Solidity: event FreeVoteCommited(uint256 indexed uid_event, string promt, bytes32 indexed promt_hash, uint256 candidate_total_votes)
 func (_Vote *VoteFilterer) ParseFreeVoteCommited(log types.Log) (*VoteFreeVoteCommited, error) {
 	event := new(VoteFreeVoteCommited)
 	if err := _Vote.contract.UnpackLog(event, "FreeVoteCommited", log); err != nil {
@@ -1926,6 +1956,142 @@ func (_Vote *VoteFilterer) WatchRoleRevoked(opts *bind.WatchOpts, sink chan<- *V
 func (_Vote *VoteFilterer) ParseRoleRevoked(log types.Log) (*VoteRoleRevoked, error) {
 	event := new(VoteRoleRevoked)
 	if err := _Vote.contract.UnpackLog(event, "RoleRevoked", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// VoteVoteCreatedIterator is returned from FilterVoteCreated and is used to iterate over the raw logs and unpacked data for VoteCreated events raised by the Vote contract.
+type VoteVoteCreatedIterator struct {
+	Event *VoteVoteCreated // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *VoteVoteCreatedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(VoteVoteCreated)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(VoteVoteCreated)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *VoteVoteCreatedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *VoteVoteCreatedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// VoteVoteCreated represents a VoteCreated event raised by the Vote contract.
+type VoteVoteCreated struct {
+	UidEvent       *big.Int
+	VoteType       uint8
+	IdTypeRequired uint8
+	Raw            types.Log // Blockchain specific contextual infos
+}
+
+// FilterVoteCreated is a free log retrieval operation binding the contract event 0x0a480e9461032fc4b7d6311035853883db94fd7654aec8b0a9e81b3f886457b3.
+//
+// Solidity: event VoteCreated(uint256 uid_event, uint8 vote_type, uint8 id_type_required)
+func (_Vote *VoteFilterer) FilterVoteCreated(opts *bind.FilterOpts) (*VoteVoteCreatedIterator, error) {
+
+	logs, sub, err := _Vote.contract.FilterLogs(opts, "VoteCreated")
+	if err != nil {
+		return nil, err
+	}
+	return &VoteVoteCreatedIterator{contract: _Vote.contract, event: "VoteCreated", logs: logs, sub: sub}, nil
+}
+
+// WatchVoteCreated is a free log subscription operation binding the contract event 0x0a480e9461032fc4b7d6311035853883db94fd7654aec8b0a9e81b3f886457b3.
+//
+// Solidity: event VoteCreated(uint256 uid_event, uint8 vote_type, uint8 id_type_required)
+func (_Vote *VoteFilterer) WatchVoteCreated(opts *bind.WatchOpts, sink chan<- *VoteVoteCreated) (event.Subscription, error) {
+
+	logs, sub, err := _Vote.contract.WatchLogs(opts, "VoteCreated")
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(VoteVoteCreated)
+				if err := _Vote.contract.UnpackLog(event, "VoteCreated", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseVoteCreated is a log parse operation binding the contract event 0x0a480e9461032fc4b7d6311035853883db94fd7654aec8b0a9e81b3f886457b3.
+//
+// Solidity: event VoteCreated(uint256 uid_event, uint8 vote_type, uint8 id_type_required)
+func (_Vote *VoteFilterer) ParseVoteCreated(log types.Log) (*VoteVoteCreated, error) {
+	event := new(VoteVoteCreated)
+	if err := _Vote.contract.UnpackLog(event, "VoteCreated", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
