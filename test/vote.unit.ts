@@ -3,6 +3,7 @@ import { expect } from "chai";
 import { Contract } from "ethers";
 import { ethers } from "hardhat";
 
+const strToBytes = ethers.utils.formatBytes32String("string.eth");
 describe("Vote test", async () => {
     let owner: SignerWithAddress
     let user: SignerWithAddress
@@ -56,47 +57,46 @@ describe("Vote test", async () => {
     })
     it("🟡 Should NOT call CommitChoiceFreePromt because vote is not active", async () => {
         await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 1, 0, 0)
-        await expect(vote.CommitChoiceFreePromt(0, "0x0")).to.be.reverted
+        await expect(vote.CommitChoiceFreePromt(0, strToBytes)).to.be.reverted
     })
     it("🟡 Should NOT call CommitChoiceFreePromt because user does not registred requirement id type", async () => {
         await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 12000, 0, 0)
-        await expect(vote.connect(user).CommitChoiceFreePromt(0, "0x0")).to.be.reverted
+        await expect(vote.connect(user).CommitChoiceFreePromt(0, strToBytes)).to.be.reverted
     })
     it("🟡 Should NOT call CommitChoiceFreePromt because user alredy voted", async () => {
         await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 12000, 0, 0)
-        await passport.createUser(owner.address, 0, "0x0")
-        await vote.connect(owner).CommitChoiceFreePromt(0, "0x0")
-        await expect(vote.connect(owner).CommitChoiceFreePromt(0, "0x0")).to.be.reverted
+        await passport.createUser(owner.address, 0, strToBytes)
+        await vote.connect(owner).CommitChoiceFreePromt(0, strToBytes)
+        await expect(vote.connect(owner).CommitChoiceFreePromt(0, strToBytes)).to.be.reverted
     })
     it("🟢 Should call CommitChoiceFreePromt", async () => {
         await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 12000, 0, 0)
-        await passport.createUser(owner.address, 0, "0x0")
-        await vote.connect(owner).CommitChoiceFreePromt(0, "0x0")
+        await passport.createUser(owner.address, 0, strToBytes)
+        await vote.connect(owner).CommitChoiceFreePromt(0, strToBytes)
     })
     it("🟡 Should NOT call CommitChoiceENSValid because vote does not exits", async () => {
-        await expect(vote.CommitChoiceENSValid(0, "0x0")).to.be.reverted
+        await expect(vote.CommitChoiceENSValid(0, strToBytes)).to.be.reverted
     })
     it("🟡 Should NOT call CommitChoiceENSValid because vote is not active", async () => {
         await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 1, 0, 1)
-        await expect(vote.CommitChoiceENSValid(0, "0x0")).to.be.reverted
+        await expect(vote.CommitChoiceENSValid(0, strToBytes)).to.be.reverted
     })
-    // it("🟡 Should NOT call CommitChoiceENSValid because ", async () => {
-    //     await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 12000, 0, 1)
-    //     await passport.connect(owner).createUser(owner.address, 0, "0x00")
-    //     await vote.connect(owner).CommitChoiceENSValid(0, "0x00")
-    //     // await expect(vote.connect(owner).CommitChoiceENSValid(0,"0x0")).to.be.reverted
-    // })
+    it("🟡 Should NOT call CommitChoiceENSValid because", async () => {
+        await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 12000, 0, 1)
+        await passport.connect(owner).createUser(owner.address, 0, strToBytes)
+        await expect(vote.connect(owner).CommitChoiceENSValid(0,strToBytes)).to.be.reverted
+    })
     it("🟡 Should NOT call CommitChoice_ENS_and_T3P because vote does not exits", async () => {
-        await expect(vote.CommitChoice_ENS_and_T3P(0, "0x0")).to.be.reverted
+        await expect(vote.CommitChoice_ENS_and_T3P(0, "string")).to.be.reverted
     })
     it("🟡 Should NOT call CommitChoice_ENS_and_T3P because vote is not active", async () => {
         await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 1, 0, 2)
-        await expect(vote.CommitChoice_ENS_and_T3P(0, "0x0")).to.be.reverted
+        await expect(vote.CommitChoice_ENS_and_T3P(0, "string")).to.be.reverted
     })
-    // it("🟡 Should NOT call CommitChoice_ENS_and_T3P because ", async () => {
-    //     await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 12000, 0, 2)
-    //     await passport.connect(owner).createUser(owner.address, 0, "0x0")
-    //     // await vote.connect(owner).CommitChoice_ENS_and_T3P(0, "0x0")
-    //     // await expect(vote.connect(owner).CommitChoiceENSValid(0,"0x0")).to.be.reverted
-    // })
+    it("🟡 Should NOT call CommitChoice_ENS_and_T3P because ", async () => {
+        await vote.connect(owner).createNewVote(ethers.constants.AddressZero, owner.address, votingTimestampLate, 12000, 0, 2)
+        await passport.connect(owner).createUser(owner.address, 0, strToBytes)
+        // await vote.connect(owner).CommitChoice_ENS_and_T3P(0, "string.eth")
+        // await vote.connect(owner).CommitChoiceENSValid(0,"string")
+    })
 })

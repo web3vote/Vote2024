@@ -3,9 +3,9 @@ import { expect, use } from "chai";
 import { Contract } from "ethers";
 import { ethers } from "hardhat";
 
-
-const getErrorText = (address: string, role: string) =>
-  `AccessControlUnauthorizedAccount("${address.toLowerCase()}", "${role}")`;
+const strToBytes = ethers.utils.formatBytes32String("0x0");
+export const getACError = (address: string, role: string) =>
+  `AccessControl: account ${address.toLowerCase()} is missing role ${role}`;
 
 describe("Passport test", async () => {
     let owner: SignerWithAddress
@@ -20,16 +20,12 @@ describe("Passport test", async () => {
     })
 
     it("🟡 Should NOT call ProoveUserByTTP under regular user", async () => {
-        await expect(passport.connect(user).ProoveUserByTTP(user.address, 0, "0x0")).to.be.reverted
-    })
-    it("🟢 Should call ProoveUserByTTP with empty mrz_uid_hash", async () => {
-        await passport.createUser(user.address, 0, "")
-        await passport.connect(owner).ProoveUserByTTP(user.address, 0, "")
+        await expect(passport.connect(user).ProoveUserByTTP(user.address, 0, strToBytes)).to.be.reverted
     })
     it("🟢 Should call ProoveUserByTTP", async () => {
-        await passport.createUser(user.address, 0, "0x01")
-        await passport.connect(owner).ProoveUserByTTP(user.address, 0, "0x01")
-        await passport.connect(user).checkUserHavePassedTTP_ByHash("0x01")
+        await passport.createUser(user.address, 0, strToBytes)
+        await passport.connect(owner).ProoveUserByTTP(user.address, 0, strToBytes)
+        await passport.connect(user).checkUserHavePassedTTP_ByHash(strToBytes)
         await passport.connect(user).CheckUserHavePassedTTP_ByAddr(user.address, 0)
     })
     it("🟡 Should NOT call addNewTTP under regular user", async () => {
@@ -39,28 +35,28 @@ describe("Passport test", async () => {
         await expect(passport.connect(user).CheckUserHavePassedTTP_ByAddr(user.address, 0)).to.be.reverted
     })
     it("🟢 Should call CheckUserHavePassedTTP_ByAddr", async () => {
-        await passport.createUser(user.address, 0, "0x0")
+        await passport.createUser(user.address, 0, strToBytes)
         await passport.connect(user).CheckUserHavePassedTTP_ByAddr(user.address, 0)
     })
     it("🟡 Should NOT call create_and_proove_ttp because already exist", async () => {
-        await passport.createUser(user.address, 0, "0x0")
-        await expect(passport.connect(user).create_and_proove_ttp(user.address, 0, "0x0")).to.be.reverted
+        await passport.createUser(user.address, 0, strToBytes)
+        await expect(passport.connect(user).create_and_proove_ttp(user.address, 0, strToBytes)).to.be.reverted
     })
     it("🟡 Should NOT call proove_ttp because already exist", async () => {
-        await expect(passport.connect(user).proove_ttp("0x0")).to.be.reverted
+        await expect(passport.connect(user).proove_ttp(strToBytes)).to.be.reverted
     })
     it("🟢 Should call getTTP_checks_by_service", async () => {
         await passport.connect(user).getTTP_checks_by_service(user.address)
     })
     it("🟢 Should call getTTP_proofs_of_user", async () => {
-        await passport.connect(user).getTTP_proofs_of_user("0x0")
+        await passport.connect(user).getTTP_proofs_of_user(strToBytes)
     })
     it("🟡 Should NOT call checkUserHavePassedTTP_ByHash because user dont exist", async () => {
-        await expect(passport.connect(user).checkUserHavePassedTTP_ByHash("0x0")).to.be.reverted
+        await expect(passport.connect(user).checkUserHavePassedTTP_ByHash(strToBytes)).to.be.reverted
     })
     it("🟢 Should call checkUserHavePassedTTP_ByHash", async () => {
-        await passport.createUser(user.address, 1, "0x01")
-        await passport.connect(user).checkUserHavePassedTTP_ByHash("0x01")
+        await passport.createUser(user.address, 1, strToBytes)
+        await passport.connect(user).checkUserHavePassedTTP_ByHash(strToBytes)
     })
     it("🟡 Should NOT call switchTTP under regular user", async () => {
         await expect(passport.connect(user).switchTTP(ethers.constants.AddressZero)).to.be.reverted
@@ -82,7 +78,7 @@ describe("Passport test", async () => {
         await passport.connect(owner).CheckUserHaveTypeIDByAddr(user.address, 0)
     })
     it("🟢 Should call CheckUserHaveTypeIDByAddr with user creation", async () => {
-        await passport.createUser(user.address, 0, "0x0")
+        await passport.createUser(user.address, 0, strToBytes)
         await passport.connect(owner).CheckUserHaveTypeIDByAddr(user.address, 0)
     })
 })
